@@ -25,6 +25,8 @@ wp-config-*.php
 
 # IDE
 .vscode/
+!.vscode/
+!.vscode/settings.json
 .idea/
 
 # WordPress cache

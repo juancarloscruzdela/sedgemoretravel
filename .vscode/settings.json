@@ -1,0 +1,36 @@
+{
+	"files.exclude": {
+		"wp-admin": true,
+		"wp-includes": true,
+		"wp-content/uploads": true,
+		"wp-content/plugins": true,
+		"wp-content/languages": true,
+		"wp-content/ai1wm-backups": true,
+		"wp-content/backups-dup-lite": true,
+		"wp-content/updraft": true,
+		"wp-content/wflogs": true,
+		"site-backup.tar.gz": true
+	},
+	"files.watcherExclude": {
+		"**/wp-admin/**": true,
+		"**/wp-includes/**": true,
+		"**/wp-content/uploads/**": true,
+		"**/wp-content/plugins/**": true,
+		"**/wp-content/languages/**": true,
+		"**/wp-content/ai1wm-backups/**": true,
+		"**/wp-content/backups-dup-lite/**": true,
+		"**/wp-content/updraft/**": true,
+		"**/wp-content/wflogs/**": true
+	},
+	"search.exclude": {
+		"wp-admin": true,
+		"wp-includes": true,
+		"wp-content/uploads": true,
+		"wp-content/plugins": true,
+		"wp-content/languages": true,
+		"wp-content/ai1wm-backups": true,
+		"wp-content/backups-dup-lite": true,
+		"wp-content/updraft": true,
+		"wp-content/wflogs": true
+	}
+}
