@@ -1,0 +1,115 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+debug.log
+error_log
+
+# Node / Composer
+node_modules/
+vendor/
+
+# Env
+.env
+.htaccess
+.htaccess.*
+wp-config.php
+wp-config-*.php
+.user.ini
+.ftpquota
+.valet-env.php
+.tmb/
+.well-known/
+
+# IDE
+.vscode/
+.idea/
+
+# WordPress cache
+wp-content/cache/
+wp-content/litespeed/
+wp-content/uploads/cache/
+wp-content/et-cache/
+wp-content/wflogs/
+wp-content/bfu-temp/
+wp-content/upgrade/
+wp-content/upgrade-temp-backup/
+
+# Elementor generated files
+wp-content/uploads/elementor/css/
+wp-content/uploads/elementor/google-fonts/
+
+# Backup plugins
+wp-content/ai1wm-backups/
+wp-content/backups-dup-lite/
+wp-content/updraft/
+wp-content/upgrade-temp-backup/
+
+# Temporary files
+*.zip
+*.tar.gz
+*.sql
+*.gz
+*.bak
+*.bk
+
+# Mac temp
+.Trashes
+
+# Git
+.gitmodules
+.git.backup-*/
+
+# WordPress core update temp
+wp-content/upgrade/
+
+# Local valet/temp
+wordpress_debug.log
+
+# Local duplicate/static exports
+sedgemoretravel.com/
+sedgemoretravel/
+
+# WordPress runtime/content generated outside the theme
+wp-content/uploads/
+wp-content/languages/
+wp-content/plugins/
+wp-content/themes/twenty*/
+
+# Legacy theme backups and local working copies
+wp-content/themes/sadgemore/assets/old/
+wp-content/themes/sadgemore/old_files_*/
+wp-content/themes/sadgemore/page-templates/old_files_*/
+wp-content/themes/sadgemore/template-parts/old_files_*/
+wp-content/themes/sadgemore/front-page.backup.php
+wp-content/themes/sadgemore/front-page.bck.php
+wp-content/themes/sadgemore/front-page.original.php
+wp-content/themes/sadgemore/footer-2025.php
+wp-content/themes/sadgemore/**/* copy*
+wp-content/themes/sadgemore/**/*.php_*
+wp-content/themes/sadgemore/**/*.js_*
+wp-content/themes/sadgemore/**/*.css_*
+wp-content/themes/sadgemore/**/*.png_
+wp-content/themes/sadgemore/**/*july*
+wp-content/themes/sadgemore/**/*jan*
+wp-content/themes/sadgemore/**/*april*
+wp-content/themes/sadgemore/**/*_old*
+wp-content/themes/sadgemore/**/*_bkp*
+wp-content/themes/sadgemore/**/*backup*
+wp-content/themes/sadgemore/**/*bck*
+wp-content/themes/sadgemore/**/*_09_*
+wp-content/themes/sadgemore/**/*_13_*
+wp-content/themes/sadgemore/**/*_14_*
+
+# WordPress core files. Reinstall/update these through WordPress or WP-CLI.
+wp-admin/
+wp-includes/
+wp-*.php
+index.php
+xmlrpc.php
+readme.html
+license.txt
+llms.txt
+wordfence-waf.php

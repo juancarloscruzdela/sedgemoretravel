@@ -1,0 +1,2389 @@
+/**
+New sedgmore file, for 2025 styles.
+*/
+
+:root{
+    --color-browns-100:#f1eeea;
+    --color-blacks-700:rgb(49, 49, 49);
+    --color-blacks-600:#797979;
+    --color-blacks-500:#b7b5b2; 
+    --color-browns-700:#623e2a;
+    --color-sand:#ece6D8;
+
+    --color-sedgemore-900:#2e2e2e;
+    --color-sedgemore-800:#6e6353;
+    --color-sedgemore-700:#8A887E;
+    --color-sedgemore-600:#A2A092;
+    --color-sedgemore-500:#d1d0CB;
+    --color-sedgemore-400:#ECE6D8;
+
+}
+
+/* Inherit from bootstrap stylesheet */
+
+a {
+    color: #313131;
+}
+
+p{
+    margin-bottom:1rem;
+}
+
+/* Initial state for all elements that will animate */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px); /* Start slightly below its final position */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Smooth transition for property changes */
+    will-change: opacity, transform; /* Optimize for animation */
+}
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    /* For staggered animations, the delay will be applied via JS to transition-delay */
+}
+
+/* Fade In Up */
+.animate-on-scroll.is-visible[data-animation="fade-in-up"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.shadow-lg{
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.shadow-negative-lg{
+    box-shadow: 0px -10px 35px -7px rgb(0 0 0 / 0.1),
+            0px -4px 26px -8px rgb(0 0 0 / 0.1);
+}
+
+.shadow-xl{
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.shadow-text{
+    text-shadow:2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.shadow-text--light{
+    text-shadow:2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.video-shadow-ellipse{
+
+  width: 100%;
+  height: 65%;
+  border-radius: 50%; /* Makes it an ellipse */
+  position: relative;
+  
+  background-image: radial-gradient(ellipse, rgba(0,0,0,0.7), transparent 60%);
+  /* * To achieve the "transparent ellipse" effect where the outside 
+   * of the ellipse shape reveals the background behind it, 
+   * we use clip-path. This will cut the element to the ellipse shape.
+   */
+  clip-path: ellipse(50% 50% at 50% 50%);
+
+  left:0;
+    bottom:0;
+}
+
+.bg-50-50{
+    background-image: linear-gradient(
+    to right,
+    var(--color-sedgemore-700) 0%, 
+    var(--color-sedgemore-700) 50%,     
+    var(--color-sedgemore-800) 50%, 
+    var(--color-sedgemore-800) 100% 
+  );
+}
+
+   .sedgemore-hero--height{
+         min-height:400px;
+        max-height:700px;
+    }
+ 
+
+/* Carousel Slider */
+
+
+.sedgemore-slider-carousel{
+    height: auto !important;
+}
+
+.sedgemore-slider-carousel .sedgemore-slide{
+    height:auto;
+    aspect-ratio:720/1080;    
+    text-align: center;
+    margin:0 auto;
+}
+
+
+/* Custom */
+
+.header_new{ /* Added to header to improve padding when scrolling. */
+     position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    padding-bottom:24px;
+    
+}
+
+/* Restore pseudo-element logo/search swap (220x60)
+   - Visually hide original <img> elements but keep them available to assistive tech
+   - Add pseudo-elements to show white assets by default
+   - When `.aply_black_hedr` is present, swap the pseudo-elements to dark assets
+   This matches the previous state and keeps markup untouched. */
+.header_new .logo_a img,
+.header_new .clickable--search-open img,
+.header_new .clickable--search-close img {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+    opacity: 0 !important;
+}
+
+.header_new .logo_a{
+    position: relative;
+    display: inline-block;
+}
+.header_new .logo_a::before{
+    content: '';
+    display: block;
+    width: 200px;
+    height: 16.13px;
+    background-image: url('/wp-content/uploads/2023/07/Group-1.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+}
+
+.header_new .clickable--search-open{
+    position: relative;
+    display: inline-block;
+}
+.header_new .clickable--search-open::before{
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background-image: url('/wp-content/themes/sadgemore/assets/images/search_icon.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+}
+
+/* When `.aply_black_hedr` is present, use dark assets */
+.aply_black_hedr .header_new .logo_a::before,
+.header_new.aply_black_hedr .logo_a::before,
+.header_new .logo_a.aply_black_hedr::before{
+    background-image: url('/wp-content/themes/sadgemore/assets/images/logo_dark.png');
+}
+.aply_black_hedr .header_new .clickable--search-open::before,
+.header_new.aply_black_hedr .clickable--search-open::before,
+.header_new .clickable--search-open.aply_black_hedr::before{
+    background-image: url('/wp-content/themes/sadgemore/assets/images/search_black.png');
+}
+
+@media only screen and (max-width: 480px) {
+    .header_new .logo_a::before{
+        width: 160px;
+        height: 13px;
+    }
+    .header_new .clickable--search-open::before{
+        width: 22px;
+        height: 22px;
+    }
+}
+
+.logo_a{
+    margin-top:0px;
+}
+.header_new .auto-container .header_dark .right_search,
+.header_new .auto-container .header_light .right_search,
+.right_search{
+    margin-top:23px;
+}
+
+.aply_black_hedr{
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Keep burger icon white on initial load and switch to dark on scroll */
+.header_new #burger-icon-dark {
+    color: #fff;
+}
+
+.header_new.aply_black_hedr #burger-icon-dark,
+.aply_black_hedr .header_new #burger-icon-dark {
+    color: var(--color-blacks-700);
+}
+
+.sedgemore-footer{
+    position: relative;
+    padding: 100px 0px 100px 0px;
+    padding:100px 0px 0px 0px;
+    letter-spacing:1px;
+    font-size: 0.825rem; 
+    line-height: 1.25rem;
+    --footer-display-font: "Cormorant Garamond", Georgia, serif;
+    --footer-body-font: "Montserrat", Arial, sans-serif;
+
+/* Ensure footer h4 uses the display/font (Cormorant Garamond) used by h2 */
+.sedgemore-footer h4.sedgemore-title,
+.sedgemore-footer .h4.sedgemore-title {
+    font-family: var(--footer-display-font) !important;
+}
+}
+
+.sedgemore-footer .sedgemore-title,
+.sedgemore-footer h4.sedgemore-title,
+.sedgemore-footer .h4.sedgemore-title,
+.sedgemore-footer .sedgemore-list a,
+.sedgemore-footer .sedgemore-list a:hover,
+.sedgemore-footer .sedgemore-list a:focus {
+    font-family: var(--footer-display-font);
+}
+
+.sedgemore-footer .sedgemore-text,
+.sedgemore-footer .sedgemore-text p,
+.sedgemore-footer .sedgemore-list,
+.sedgemore-footer .sedgemore-list li {
+    font-family: var(--footer-body-font);
+}
+
+.sedgemore-footer .sedgemore-title,
+.sedgemore-footer h4.sedgemore-title,
+.sedgemore-footer .h4.sedgemore-title {
+    text-transform: none;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.sedgemore-footer h4.sedgemore-title,
+.sedgemore-footer .h4.sedgemore-title {
+    font-size: 20px;
+}
+
+.sedgemore-footer .sedgemore-title {
+    font-size: 36px;
+}
+
+.sedgemore-footer .sedgemore-text,
+.sedgemore-footer .sedgemore-text p,
+.sedgemore-footer .sedgemore-list,
+.sedgemore-footer .sedgemore-list li,
+.sedgemore-footer .sedgemore-list a,
+.sedgemore-footer .sedgemore-list a:hover,
+.sedgemore-footer .sedgemore-list a:focus {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.75;
+    letter-spacing: 0.02em;
+}
+
+.sedgemore-title{
+    font-family:"Jost_300";
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color:var(--color-blacks-700);
+}
+
+h4.sedgemore-title,
+.h4.sedgemore-title{
+    text-transform:capitalize;
+    font-size: 1rem; 
+    line-height: 1.3rem;
+    font-family:"Jost_300";
+    letter-spacing: 3px;
+    font-weight:800;
+}
+
+.sedgemore-scaling-title{
+    text-transform:capitalize;
+    font-size: 1rem; 
+    line-height: 1.3rem;
+    font-family:"Jost_300";
+    letter-spacing: 3px;
+    font-weight:800;
+}
+
+.h4.sedgemore-title.uppercase{
+    text-transform: uppercase;
+}
+
+.sedgemore-video-title{
+    color:#fff;
+    font-size:1.6rem;
+    line-height:1.6rem;
+    display:inline-block;
+    width:100%;
+    font-family:"Roboto_100", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    word-break: break-word;
+    overflow: hidden;
+}
+
+.sedgemore-video-text{
+    color:#fff;
+    letter-spacing: 3px;
+
+}
+
+.sedgemore-main-video{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.sedgemore-list{
+    text-transform:capitalize;
+}
+.sedgemore-list li{
+    line-height:1.75rem;
+}
+.sedgemore-list a,
+.sedgemore-list a:hover,
+.sedgemore-list a:focus{
+    color:var(--color-blacks-700);
+}
+
+/* Make clickable text bold on hover/focus */
+a, a:link, a:visited,
+button, .button, .btn,
+input[type="submit"], input[type="button"],
+.wp-block-button__link, .sedgemore-list a {
+    transition: font-weight 0.08s ease;
+    cursor: pointer;
+}
+
+a:hover, a:focus,
+button:hover, button:focus, .button:hover, .button:focus, .btn:hover, .btn:focus,
+input[type="submit"]:hover, input[type="submit"]:focus, input[type="button"]:hover, input[type="button"]:focus,
+.wp-block-button__link:hover, .wp-block-button__link:focus,
+.sedgemore-list a:hover, .sedgemore-list a:focus {
+    font-weight: 500 !important;
+}
+
+.sedgemore-text,
+.sedgemore-text p{
+    font-family: "Poppins";
+    font-weight:400;
+    /*color:var(--color-blacks-700);*/
+}
+
+.sedgemore-text:not(.text-white) p{
+    color:var(--color-blacks-700);
+}
+
+.sedgemore-text p{
+    padding:0;
+    margin-top:1.875rem;
+}
+
+.sedgemore-footer .sedgemore-text p,
+.sedgemore-footer p,
+.sedgemore-footer .text-xs,
+.sedgemore-footer .text-xs p {
+    font-family: var(--footer-body-font) !important;
+    font-size: 15px !important;
+    font-weight: 300 !important;
+    line-height: 1.75 !important;
+    letter-spacing: 0.02em !important;
+}
+
+.sedgemore-footer .text-xs {
+    color: var(--color-blacks-700) !important;
+}
+
+.sedgemore-section{
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.sedgemore-legacy-container{
+  position: static;
+  max-width: 96%;
+  padding: 0px 15px;
+  margin: 0 auto;
+}
+
+.sedgemore-link-wrapper{
+    position: relative;
+    display: block; 
+    text-decoration: none; 
+    cursor: pointer; 
+    overflow: hidden; 
+    width:100%;
+    aspect-ratio: 4/5;
+}
+
+.sedgemore-clickable-item{
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.sedgemore-link-wrapper:hover .sedgemore-clickable-item{
+     transform: scale(1.02);
+}
+
+.sedgemore-overlay--play{
+    opacity:1;
+    height:60px;
+    width:60px;
+    background-color:rgba(0, 0, 0, 0.3);
+    position:absolute;
+    left:calc(50% - 30px);
+    top:calc(50% - 30px);
+    border-radius: 50%;
+    color:#fff;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.sedgemore-gallery-nav button{
+    height:30px;
+    width:30px;
+    background-color:var(--color-blacks-600);
+    border-radius:50%;
+    color:#fff;
+    cursor:pointer;
+}
+
+.sedgemore-gallery-nav button:hover{
+    opacity:0.8;
+}
+
+.sedgemore-link-wrapper:hover .sedgemore-overlay--play{
+    opacity:0;
+}
+
+.sedgemore-overlay--lower{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:start;     
+    background-image:linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8) 0%, 
+        rgba(0, 0, 0, 0) 100%
+    );
+    pointer-events: none; 
+    transition: background-color 0.3s ease;
+}
+
+.sedgemore-link-wrapper:hover .sedgemore-overlay--lower{
+        background-image:linear-gradient(
+        to top,    
+        rgba(0, 0, 0, 1) 0%,     
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+/*
+@keyframes float {
+ 0% {
+    transform: translateY(8px);
+  }
+  50% {
+    transform: translateY(0); 
+  }
+  100% {
+    transform: translateY(8px);
+  }
+}
+
+.ambient-image{
+    animation: float 12s ease-in-out infinite alternate;
+}
+
+.sedgemore-travel-section-image{
+    
+}
+*/
+.sedgemore-travel-section-image--aspect-ratio{
+    aspect-ratio: 1600/920;
+}
+/*
+.sedgemore-travel-section-image img{
+    object-position:50% 50%;
+    object-fit:cover;
+   
+}*/
+
+.sedgemore-btn{
+    display:inline-block;
+    padding:10px 40px;
+    border: 1px solid var(--color-blacks-700);
+    color:var(--color-blacks-700);
+    text-transform: uppercase;
+    letter-spacing:2px;
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+}
+
+.sedgemore-btn:hover{
+    color:var(--color-blacks-700);
+    border: 1px solid var(--color-blacks-700);
+    transform: scale(1.1);
+}
+
+.btn--small{
+    padding:10px 20px;
+}
+
+.sedgemore-submit{
+    display:inline-block;
+    padding:10px 40px;
+    border: 1px solid var(--color-blacks-600);
+    color:#fff;
+    background-color:var(--color-blacks-600);
+    text-transform: uppercase;
+    letter-spacing:2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.form--dark-bordered .sedgemore-submit{
+    border: 1px solid var(--color-blacks-700);
+    background-color:var(--color-blacks-700);
+}
+
+.sedgemore-sliding-gallery--height{
+    height:400px;
+}
+
+.sedgemore-our-work-sliding-gallery--height{
+    height:500px;
+}
+
+.sedgemore-sliding-gallery{    
+  display: flex;
+  gap: 4vmin;
+  position: absolute;
+  left:0;
+  top: 0%;
+  transform: translate(0%, -50%);
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  scroll-behavior: smooth;
+}
+
+.sedgemore-sliding-gallery > .image.image_caption{
+    float: left;
+    width: 80vmin;
+} 
+
+.sedgemore-sliding-gallery{
+    margin-top:10rem;
+ }
+
+@media (min-aspect-ratio: 1) {
+    .sedgemore-sliding-gallery{
+        margin-top:10rem;
+    }
+}
+
+@media (min-aspect-ratio: 2) {
+    .sedgemore-sliding-gallery{
+        margin-top:12rem;
+    }
+}
+
+@media (min-width: 1500px ) {
+    .sedgemore-sliding-gallery{
+        margin-top:12rem;
+    }
+}
+
+@media (max-width: 500px ) {
+
+    .sedgemore-sliding-gallery--height{
+        height:250px;
+    }
+
+    .sedgemore-sliding-gallery{
+        margin-top:6rem;
+    }
+}
+
+.sedgemore-gallery-item{           
+    position:relative;
+    border-radius: 10px;
+    cursor: pointer;
+    will-change: transform;
+    overflow:hidden;
+}
+
+.sedgemore-gallery-item > .image{
+    border-radius:10px;
+    object-fit: cover;
+    object-position: 100% center;
+    max-width: none;
+    transition: all 500ms ease;
+    will-change: transform;
+}
+
+.sedgemore-gallery-item:hover .image {
+    transform: scale(1.3);
+    background: rgba(0, 0, 0, 0.5411764706);
+    transition: -webkit-transform 500ms ease;
+    transition: transform 500ms ease;
+    transition: transform 500ms ease, -webkit-transform 500ms ease;
+}
+
+.sedgemore-legacy-item--height{
+  
+  height: 56vmin;
+}
+
+.sedgemore-legacy-item--width{
+width: 36vmin;
+}
+
+.sedgemore-gallery-item--height{
+    max-height:300px;
+}
+
+.sedgemore-gallery-item--width{
+     max-width:225px;
+}
+
+.sedgemore-our-work-single-image--height{
+    max-height:700px;
+}
+
+.sedgemore-our-work-grid-item--width{
+    width:100%;
+}
+
+
+/* Forms */
+
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+.invalid-field {
+    border: 1px solid red !important;
+}
+
+/* --- Floating Label Styles --- */
+
+.floating-label-group {
+    position: relative;
+    margin-bottom: 25px; /* Add space for the floating label */
+    padding-top: 0;   /* Add space for the label to float into */
+}
+
+.floating-label-group input,
+.floating-label-group textarea {
+    width: 100%;
+    padding: 10px 10px 10px 10px;
+    height:40px;
+    border: 1px solid #fff;
+    font-size: 14px;
+    line-height: 20px; /* Explicit line-height can help stabilize alignment */
+    box-sizing: border-box;
+    font-family:'Jost_300';
+}
+
+.floating-label-group textarea{
+    min-height:75px;
+}
+
+.floating-label-group label {
+    /* Initial state: Position the label inside the input area */
+    position: absolute;
+    top: 50% ; /* Center vertically within the input area */
+    left: 10px;
+    color: #999;
+    font-size: 14px;
+    transform: translateY(-50%); /* Move up half its height for perfect center */
+    transition: all 0.2s ease-out;
+    pointer-events: none; /* Allows clicks to go through to the input */
+    z-index: 1;
+}
+
+/* State 1: When input is focused OR has content, move the label up and shrink it */
+.floating-label-group input:focus + label,
+.floating-label-group textarea:focus + label,
+.floating-label-group textarea:not(:placeholder-shown) + label, 
+.floating-label-group input:not(:placeholder-shown) + label {
+    top: -10px; 
+    left: 5px;
+    font-size: 12px;
+    color: #333; /* Darker color when active/floating */
+    
+    padding: 0 5px;
+}
+
+/* State 2: Hide the placeholder text when it's showing (prevents visual conflict) */
+.floating-label-group input:not(:placeholder-shown)::placeholder,
+.floating-label-group textarea:not(:placeholder-shown)::placeholder {
+    opacity: 0;
+}
+
+.form--dark-bordered .floating-label-group input,
+.form--dark-bordered .floating-label-group textarea {
+    border: 1px solid var(--color-blacks-700);
+}
+
+.form--dark-bordered .floating-label-group label{
+    color:var(--color-blacks-700);
+}
+
+.btn--light,
+.btn--light:hover{
+    border: 1px solid #fff;
+    color:#fff;
+}
+
+.btn--white{
+    border: 1px solid #fff;
+    background:#fff;
+    color:var(--color-browns-700)
+}
+
+/* Javascript related classes */
+.hover-video{
+    width: 100%;
+    height: 100%;    
+    object-fit:cover;
+    object-position: center;
+    display: block;
+}
+
+
+/* Text */
+
+.font-heading{
+    font-family:"Jost_300";
+}
+
+.font-bold{
+    font-weight:700;
+}
+
+.font-normal{
+    font-weight:400;
+}
+
+.uppercase{
+    text-transform: uppercase;
+}
+
+.leading-9{
+    line-height: 2.25rem;
+}
+
+.leading-10{
+    line-height: 2.5rem;
+}
+
+.leading-12{
+    line-height: 3rem;
+}
+
+.text-xs{
+    font-size: 0.675rem; 
+    line-height: 0.85rem;
+}
+
+.text-sm{
+    font-size: 0.875rem; 
+    line-height: 1.25rem;
+}
+
+.text-base{
+    font-size: 1rem; 
+    line-height: 1.5rem;
+}
+
+.text-xl{
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.text-2xl{
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.text-3xl{
+    font-size: 1.75rem;
+    line-height: 2.1rem;
+}
+
+.text-4xl{
+    font-size:1.875rem;
+    line-height:2.25rem;
+}
+
+.text-5xl{
+    font-size:2rem;
+    line-height:2.5rem;
+}
+
+.text-6xl{
+    font-size:2.25rem;
+    line-height:2.75rem;
+}
+
+.text-7xl{
+    font-size:2.5rem;
+    line-height:3rem;
+}
+
+.text-8xl{
+    font-size:3rem;
+    line-height:3.5rem;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-left{
+    text-align:left;
+}
+
+
+/* Radius */
+.rounded-2xl{
+    border-radius: 1rem;
+}
+
+
+/* Display */
+
+.hidden{
+    display:none;
+}
+
+.block{
+    display:block;
+}
+
+.flex{
+    display:flex;
+}
+
+.inline-block{
+    display:inline-block;
+}
+
+.grid{
+    display:grid;
+}
+
+.relative{
+    position:relative;
+}
+
+.absolute{
+    position:absolute;
+}
+
+.fixed{
+    position:fixed;
+}
+
+.float-left{
+    float:left;
+}
+
+.float-right{
+    float:right;
+}
+
+.z-0{
+    z-index:0;
+}
+
+.z-5{
+    z-index:5;
+}
+
+.z-10{
+    z-index:10;
+}
+
+.z--10{
+    z-index:-10;
+}
+
+.right-0{
+    right:0;
+}
+
+.top-0{
+    top:0;
+}
+
+.left-0{
+    left:0;
+}
+
+.inset-0{
+    inset: 0px;
+}
+
+.bottom-16{
+    bottom:4rem;
+}
+.bottom-1\/10{
+    bottom:10%;
+}
+
+/* Due to conflict with bootstrap prepend 's' is necessary.*/
+.s-flex-row{
+    flex-direction:row;
+}
+
+.flex-row-reverse{
+    flex-direction:row-reverse;
+}
+
+.s-flex-col{
+    flex-direction:column;
+}
+
+.flex-col-reverse{
+    flex-direction:column-reverse;
+}
+
+.overflow-hidden{
+    overflow: hidden;
+}
+
+.overflow-y-auto{
+    overflow-y: auto;
+}
+
+.justify-between{
+    justify-content: space-between;
+}
+
+.justify-around{
+    justify-content: space-around;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.justify-end{
+    justify-content: end;
+}
+
+.content-around{
+    align-content: space-around;
+}
+
+.content-end{
+    align-content: end;
+}
+
+
+.items-center{
+    align-items: center;
+}
+
+.self-center{
+    justify-self:center;
+}
+
+.items-start{
+    align-items: start;
+}
+
+.items-end{
+    align-items: end;
+}
+
+.place-content-center{
+    place-content: center;
+}
+
+.place-content-end{
+    place-content: end;
+}
+
+.flex-auto{
+    flex: 1 1 auto;
+}
+
+.basis-1\/2{
+    flex-basis: 50%;
+}
+.basis-full{
+    flex-basis: 100%;
+}
+
+
+.gap-1{
+    gap:0.25rem;
+}
+
+.gap-2{
+    gap:0.5rem;
+}
+
+.gap-4{
+    gap:1rem;
+}
+
+.gap-y-4{
+    row-gap:1rem;
+}
+
+.gap-6{
+    gap:1.5rem;
+}
+
+.gap-8{
+    gap:2rem;
+}
+
+.gap-12{
+    gap:3rem;
+}
+
+.gap-x-12{
+    column-gap:3rem;
+}
+
+
+.gap-16{
+    gap:4rem;
+}
+
+.gap-32{
+    gap:8rem;
+}
+
+.grow{
+    flex-grow:1;
+}
+
+.shrink-0{
+    flex-shrink:0;
+}
+
+.flex-wrap{
+    flex-wrap:wrap;
+}
+
+.grid-cols-1{
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-3{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.col-span-2{
+    grid-column: span 2 / span 2;
+}
+
+.row-span-2{
+    grid-row: span 2 / span 2;
+}
+
+
+/* Widths and heights */
+
+.w-2{
+    width:0.5rem;
+}
+
+.h-2{
+    height:0.5rem;
+}
+
+.w-4{
+    width:1rem;
+}
+
+.h-4{
+    height:1rem;
+}
+
+.w-6{
+    width:1.5rem;
+}
+
+.h-6{
+    height:1.5rem;
+}
+
+.w-8{
+    width:2rem;
+}
+
+.h-8{
+    height:2rem;
+}
+
+.h-9{
+    height:2.25rem;
+}
+
+.h-16{
+    height:4rem;
+}
+
+.max-w-16{
+    max-width:4rem;
+}
+
+.max-w-32{
+    max-width:8rem;
+}
+
+.max-w-64{
+    max-width:16rem;
+}
+
+.max-w-128{
+    max-width:32rem;
+}
+
+.min-h-32{
+    min-height:8rem;
+}
+
+.w-24{
+    width:6rem;
+}
+
+.w-32{
+    width:8rem;
+}
+
+.w-40{
+    width:10rem;
+}
+
+.w-64{
+    width:16rem;
+}
+
+.max-w-64{
+    max-width:16rem;
+}
+
+.w-full{
+    width:100%;
+}
+
+.max-w-full{
+    max-width:100%;
+}
+
+.h-full{
+    height:100%;
+}
+
+.h-screen{
+    height: 100vh;
+}
+
+.min-h-full{
+    min-height:100%;
+}
+
+.w-1\/5{
+    width:20%;
+}
+
+
+.w-1\/4{
+    width:25%;
+}
+
+.w-1\/3{
+    width: 33.33333%;
+}
+
+.w-1\/2{
+    width:50%;
+}
+
+.w-2\/3{
+    width: 66.66666%;
+}
+
+.w-3\/4{
+    width:75%;
+}
+
+.aspect-auto{
+    aspect-ratio: auto;
+}
+
+.aspect-0pt756{
+    aspect-ratio: 0.756;
+}
+
+.object-fit-cover{
+    object-fit: cover;
+}
+.object-position-center{
+    object-position:50% 50%;
+ }
+    
+
+
+
+/* Colours */
+
+.bg-browns-100{
+    background-color:var(--color-browns-100);
+}
+
+.bg-blacks-600{
+    background-color:var(--color-blacks-600);
+}
+
+.bg-blacks-700{
+    background-color:var(--color-blacks-700);
+}
+
+.bg-sedgemore-900{
+    background-color:var(--color-sedgemore-900);
+}
+
+.bg-sedgemore-800{
+    background-color:var(--color-sedgemore-800);
+}
+
+.bg-sedgemore-700{
+    background-color:var(--color-sedgemore-700);
+}
+
+.bg-sedgemore-600{
+    background-color:var(--color-sedgemore-600);
+}
+
+.bg-sedgemore-500{
+    background-color:var(--color-sedgemore-500);
+}
+
+.bg-sedgemore-400{
+    background-color:var(--color-sedgemore-400);
+}
+
+.bg-white{
+    background-color:#fff;
+}
+
+.tracking-tight{
+    letter-spacing: -0.025rem;
+}
+
+.tracking-normal{
+    letter-spacing:0rem;
+}
+
+.tracking-adjusted{
+    letter-spacing: 0.05rem;
+}
+
+.tracking-wide{
+    letter-spacing: 0.15rem;
+}
+
+.text-white{
+    color:#fff;
+}
+
+.text-blacks-700{
+    color:var(--color-blacks-700);
+}
+
+
+.text-blacks-600{
+    color:var(--color-blacks-600);
+}
+
+.text-blacks-500{
+    color:var(--color-blacks-500);
+}
+
+/* Paddings and margins */
+
+.mx-auto{
+    margin:0 auto;
+}
+
+
+.mt-0{
+    margin-top:0;
+}
+
+.mb-0{
+    margin-bottom:0;
+}
+
+.pt-0{
+    padding-top:0;
+}
+
+.pb-0{
+    padding-bottom:0;
+}
+
+.pt-1{
+    padding-top:0.25rem;
+}
+
+.mr-1{
+    margin-right:0.25rem;
+}
+
+.mt-1{
+    margin-top:0.25rem;
+}
+
+.mb-1{
+    margin-bottom:0.25rem;
+}
+
+.pl-2{
+    padding-left:0.5rem;
+}
+
+.px-2{
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+}
+
+.mt-2{
+    margin-top:0.5rem;
+}
+
+.mb-2{
+    margin-bottom:0.5rem;
+}
+
+.py-2{
+    padding-top:0.5rem;
+    padding-bottom:0.5rem;
+}
+
+.mb-3{
+    margin-bottom:0.75rem;
+}
+
+.pl-4{
+    padding-left:1rem;
+}
+
+.pr-4{
+    padding-right:1rem;
+}
+
+.pb-4{
+    padding-bottom:1rem;
+}
+
+.pt-4{
+    padding-top:1rem;
+}
+
+.mb-4{
+    margin-bottom:1rem;
+}
+
+.mt-4{
+    margin-top:1rem;
+}
+
+.px-4{
+     padding-left:1rem;
+     padding-right:1rem;
+}
+
+.p-8{
+    padding:2rem;
+}
+
+.pt-8{
+    padding-top:2rem;
+}
+
+.pr-8{
+    padding-right:2rem;
+}
+
+.pl-8{
+    padding-left:2rem;
+}
+
+.pr-8{
+    padding-right:2rem;
+}
+
+.pb-8{
+    padding-bottom:2rem;
+}
+
+.py-8{
+    padding-top:2rem;
+    padding-bottom:2rem;
+}
+
+.mt-8{
+    margin-top:2rem;
+}
+
+.mb-8{
+    margin-bottom:2rem;
+}
+
+.mb-12{
+    margin-bottom:3rem;
+}
+
+.py-12{
+    padding-top:3rem;
+    padding-bottom:3rem;
+}
+
+.mt-16{
+    margin-top:4rem;
+}
+
+.mb-16{
+    margin-bottom:4rem;
+}
+
+.pt-16{
+    padding-top:4rem;
+}
+
+.pb-16{
+    padding-bottom:4rem;
+}
+
+.pr-16{
+    padding-right:4rem;
+}
+
+.pl-16{
+    padding-left:4rem;
+}
+
+.py-16{
+    padding-top:4rem;
+    padding-bottom:4rem;
+}
+
+.pt-24{
+    padding-top:6rem;
+}    
+
+.pb-24{
+    padding-bottom:6rem;
+}
+
+.py-24{
+    padding-top:6rem;
+    padding-bottom:6rem;
+}
+
+.mt-48{
+    margin-top:12rem;
+}
+
+.pb-64{
+    padding-bottom:16rem;
+}    
+
+.mt-64{
+    margin-top:16rem;
+}
+
+
+.mt-\[24px\]{
+    margin-top:24px;
+}
+
+.mt-\[26px\]{
+    margin-top:26px;
+}
+
+
+ul:not(.owl).list-disc,
+ul:not(.owl).list-disc li{
+    list-style-type:disc !important;
+    list-style-position:inside;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+
+
+
+
+/* Search bar */
+.search_bar_on .clickable--search-close{
+    display:block;
+}
+.search_bar_on .clickable--search-open{
+    display:none;
+}
+
+
+/* Burger menu nav */
+.header_nav_inner .nav-top{
+    display:none;
+}
+
+.nav-menu{
+    display:none;
+}
+
+.nav-menu.open{
+    display:block;
+    z-index:1000;
+}
+
+.flower-image{
+  -webkit-transition: all 1000ms ease;
+  transition: all 1000ms ease;
+  position: absolute;
+  top: 0;
+  left: calc(50% + 2px);
+  transform: translate(-50%, -50%) translateZ(0);
+  width: 34px;
+  height: 34px;
+  margin: 38px 0 0 0;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+.divider_sharp{
+    position: absolute;
+    margin: -10px 0 0 0 !important;
+    padding: 0;
+}
+
+.flower-image:hover{
+    transform: translate(-50%, -50%) translateZ(0) rotate(360deg);
+}
+
+.header_nav_inner a{
+    position:relative;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+}
+.header_nav_inner a.active{
+ color:var(--color-blacks-700);
+}
+
+.header_nav_inner a:hover{
+    color:var(--color-blacks-700);
+}
+
+/* New layout of header nav */
+@media only screen and (max-width: 767px) {
+
+    /* For ease, only set this for smaller viewports */
+    .header_nav{
+        height:100%;
+        width:100%;
+        padding:0;
+        top:0;
+        left:0;
+    }
+
+    .header_nav_inner a{
+        font-size:1.25rem;
+        line-height:2.05rem;        
+    }
+
+    .header_nav_inner a:hover{
+        transform: translateX(2px);
+    }
+}
+
+.nav-menu.open .sedgemore-burger-menu-padding,
+.close-icon{
+    padding-left:calc(2% + calc(8px + 15px));
+}
+
+.search_wrap_iner{
+    border-radius: 0 !important;
+}
+
+@media only screen and (min-width: 768px) {
+
+    
+    .md\:bg-50-50{
+        background-image: linear-gradient(
+        to right,
+        var(--color-sedgemore-700) 0%, 
+        var(--color-sedgemore-700) 50%,     
+        var(--color-sedgemore-800) 50%, 
+        var(--color-sedgemore-800) 100% 
+    );
+    }
+    /* Burger menu nav, lower nav */
+    .header_nav_inner .nav-top{
+        display:flex;
+        margin-top:1px !important; /* A bit of a hack to get the old graphic aligned */
+    }    
+
+    .header_nav_inner a{
+        font-size:0.8rem;
+    }
+
+    .header_nav_inner a:hover{
+        transform: translateY(-2px);
+    }
+    
+    .burger-icon,
+    .close-icon{
+        display:none;
+    }    
+
+    .header_new{ 
+        padding-bottom:24px;
+    }
+
+    /* header spacing and logo swap overrides removed (restored to theme defaults) */
+
+    /* Our lower menu styling */
+    .header_nav{
+        display:block;
+    }
+
+
+    .video-shadow-ellipse{  
+        height: 55%;
+    }
+
+    .header_new .auto-container .header_dark .right_search,
+    .header_new .auto-container .header_light .right_search,
+    .right_search{
+        margin-top:23px;
+    }
+
+    .sedgemore-slider-carousel .sedgemore-slide{
+        aspect-ratio:1280/720;    
+    }
+
+    .sedgemore-our-work-grid-item--height{
+        aspect-ratio: 9 / 13;
+        max-height:500px;
+    }
+
+    .sedgemore-hero--height{
+         min-height:400px;
+        max-height:700px;
+    }
+
+    .sedgemore-video-title{
+        font-size:2rem;
+        line-height:2rem;       
+    }
+
+    .sedgemore-section{
+        padding-left:100px;
+        padding-right:100px;
+    }
+
+    .sedgemore-concierge-service--width{
+        width:calc(50% - 1rem);
+    }
+
+    .md\:text-base{
+        font-size: 1rem; 
+        line-height: 1.5rem;
+    }
+
+    .md\:text-4xl{
+        font-size:1.875rem;
+        line-height:2.25rem;
+    }    
+
+    .md\:text-5xl{
+        font-size:2rem;
+        line-height:2.5rem;
+    }
+
+    .md\:text-6xl{
+        font-size:2.25rem;
+        line-height:2.75rem;
+    }
+
+    .md\:text-7xl{
+        font-size:2.5rem;
+        line-height:3rem;
+    }    
+
+    .md\:text-8xl{
+        font-size:3rem;
+        line-height:3.5rem;
+    }       
+
+    .md\:leading-12{
+        line-height:3rem;
+    }
+
+    .md\:text-left{
+        text-align:left;
+    }
+
+    .md\:block{
+        display:block;
+    }
+
+    .md\:justify-center{
+        justify-content: center;
+    }
+
+    .md\:items-center{
+        align-items: center;
+    }
+
+    .md\:items-start{
+        align-items: start;
+    }
+
+    .md\:items-end{
+        align-items: end;
+    }
+
+    .md\:content-end{
+        align-content: end;
+    }
+
+    .md\:place-content-end{
+        place-content: end;
+    }
+
+    .md\:place-content-start{
+        place-content:start
+    }
+
+    .md\:flex-col-reverse{
+        flex-direction: column-reverse;
+    }
+
+    .md\:grid-cols-2{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    .md\:grid-cols-3{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    
+    .md\:grid-cols-4{
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .md\:col-span-2{
+        grid-column: span 2 / span 2;
+    }
+
+    .md\:row-span-2{
+        grid-row: span 2 / span 2;
+    }
+
+    .md\:grid-reverse{
+        direction:rtl;
+    }
+
+    .md\:basis-1\/2{
+        flex-basis: 50%;
+    }
+
+
+    .md\:gap-16{
+        gap:4rem;
+    }
+
+    .md\:w-6{
+        width:1.5rem;
+    }
+
+    .md\:h-6{
+        height:1.5rem;
+    }
+
+    .md\:w-40{
+        width:10rem;
+    }
+
+    .md\:w-1\/4{
+        width:25%;
+    }    
+
+    .md\:w-1\/3{
+        width:33.33333%;
+    }    
+
+    .md\:w-1\/2{
+        width:50%;
+    }
+
+    .md\:w-2\/3{
+        width:66.66666%;
+    }    
+
+    .md\:w-3\/4{
+        width:75%;
+    }
+
+    .md\:pb-0{
+        padding-bottom:0;
+    }
+
+    .md\:mt-0{
+        margin-top:0;
+    }
+
+    .md\:mb-0{
+        margin-bottom:0;
+    }
+
+    .md\:py-2{
+        padding-top:0.5rem;
+        padding-bottom:0.5rem;  
+    }
+
+    .md\:px-2{
+        padding-left:0.5rem;
+        padding-right:0.5rem;
+    }
+    
+    .md\:pt-4{
+        padding-top:1rem;
+    }
+
+    .md\:px-4{
+        padding-left:1rem;
+        padding-right:1rem;
+    }
+
+    .md\:pr-8{
+        padding-right:2rem;        
+    } 
+    
+    .md\:mr-8{
+        margin-right:2rem;        
+    }     
+
+    .md\:pl-8{
+        padding-left:2rem;        
+    }  
+    
+    .md\:ml-8{
+        margin-left:2rem;        
+    }      
+
+    .md\:pt-8{
+        padding-top:2rem;        
+    }     
+
+    .md\:py-8{
+        padding-top:2rem;
+        padding-bottom:2rem;  
+    }  
+
+    .md\:ml-12{
+        margin-left:3rem;        
+    } 
+
+    .md\:mb-12{
+        margin-bottom:3rem;
+    }
+
+    .md\:mt-12{
+        margin-top:3rem;
+    }
+
+    .md\:ml-16{
+        margin-left:4rem;
+    }
+    
+    .md\:mr-16{
+        margin-right:4rem;
+    }
+
+    .md\:mt-16{
+        margin-top:4rem;
+    }    
+
+    .md\:mb-16{
+        margin-bottom:4rem;
+    }
+    
+    .md\:pt-16{
+        padding-top:4rem;
+    }
+
+    .md\:pb-16{
+        padding-bottom:4rem;
+    }    
+
+    .md\:pl-16{
+        padding-left:4rem;
+    }    
+
+    .md\:pr-16{
+        padding-right:4rem;
+    }    
+
+
+    .md\:pt-24{
+        padding-top:6rem;
+    } 
+    
+    .md\:pb-24{
+        padding-bottom:6rem;
+    }    
+    
+    .md\:pt-40{
+        padding-top:10rem;
+    }    
+
+    .md\:mt-\[21px\]{
+        margin-top:21px;
+    }    
+
+    .md\:mt-\[24px\]{
+        margin-top:24px;
+    }
+
+    .md\:s-flex-row{
+        flex-direction:row;
+    }
+
+    .md\:flex-row-reverse{
+        flex-direction:row-reverse;
+    }    
+    
+}
+
+@media only screen and (min-width: 1024px) {
+
+    .sedgemore-gallery-item--height{
+        max-height:400px;
+    }
+
+    .sedgemore-gallery-item--width{
+        max-width:300px;
+    }
+
+    .sedgemore-our-work-single-image--height{
+        max-height:700px;
+    }
+
+    .sedgemore-hero--height{
+         min-height:500px;
+        max-height:700px;
+    }
+
+    .sedgemore-concierge-service--width{
+        width:calc(25% - 1rem);
+    }
+
+    .lg\:flex{
+        display:flex;
+    }
+
+    .lg\:bottom-16{
+        bottom:4rem;
+    }
+
+    .lg\:bottom-1\/10{
+        bottom:10%;
+    }
+
+
+    .lg\:absolute{
+        position:absolute;
+    }
+
+    .lg\:text-xl{
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    
+    .lg\:text-2xl{
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    .lg\:text-3xl{
+        font-size: 1.75rem;
+        line-height: 2.1rem;
+    }
+
+    .lg\:text-4xl{
+        font-size:1.875rem;
+        line-height:2.25rem;
+    }
+
+    .lg\:text-5xl{
+        font-size:2rem;
+        line-height:2.5rem;
+    }
+
+    .lg\:text-7xl{
+        font-size:2.5rem;
+        line-height:3rem;
+    }
+
+    .lg\:text-8xl{
+        font-size:3rem;
+        line-height:3.5rem;
+    }
+
+    .lg\:w-1\/3{
+        width:33.33333%;
+    } 
+
+    .lg\:w-1\/2{
+        width:50%;
+    }
+
+    .lg\:w-2\/3{
+        width:66.66666%;
+    }    
+
+    .lg\:pt-0{
+        padding-top:0;
+    }  
+
+    .lg\:py-2{
+        padding-top:0.5rem;
+        padding-bottom:0.5rem;  
+    }
+
+    .lg\:pt-8{
+        padding-top:2rem;        
+    }     
+
+    .lg\:pr-8{
+        padding-right:2rem;
+    }
+
+    .lg\:py-8{
+        padding-top:2rem;
+        padding-bottom:2rem;  
+    }    
+
+    .lg\:py-16{
+        padding-top:4rem;
+        padding-bottom:4rem;  
+    }
+    
+    .lg\:px-16{
+        padding-left:4rem;
+        padding-right:4rem;
+    }
+
+    .lg\:pt-16{
+        padding-top:4rem;
+    }
+
+    .lg\:pb-16{
+        padding-bottom:4rem;
+    }    
+
+    .lg\:pr-16{
+        padding-right:4rem;
+    }  
+    
+    .lg\:pl-16{
+        padding-left:4rem;
+    }      
+
+    .lg\:pb-24{
+        padding-bottom:6rem;
+    }
+
+    .lg\:pt-24{
+        padding-top:6rem;
+    }
+
+    .lg\:py-24{
+        padding-top:6rem;
+        padding-bottom:6rem;
+    }
+
+    .lg\:pr-32{
+        padding-right:8rem;
+    }       
+
+    .lg\:pb-32{
+        padding-bottom:8rem;
+    }     
+    
+    .lg\:mt-64{
+        margin-top:16rem;
+    }   
+
+    .lg\:s-flex-row{
+        flex-direction:row;
+    }
+
+    .lg\:flex-row-reverse{
+        flex-direction:row-reverse;
+    }        
+
+    .lg\:text-left{
+        text-align: left;
+    }
+
+    .lg\:w-1\/2{
+        width:50%;
+    }    
+
+    .lg\:w-2\/3{
+        width: 66.66666%;
+    }
+
+    .lg\:w-3\/4{
+        width:75%;
+    }    
+
+    .lg\:w-full{
+        width:100%;
+    }
+
+    .lg\:gap-8{
+         gap:2rem;
+    }
+
+    .lg\:items-center{
+        align-items: center;
+    }
+
+    .lg\:place-content-end{
+        place-content: end;
+    }
+
+    .lg\:justify-center{
+        justify-content: center;
+    }
+
+    .lg\:grid-cols-3{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+        
+    .lg\:col-span-1{
+        grid-column: span 1/ span 1;
+    }
+
+    .lg\:col-start-2{
+        grid-column-start: 2;
+    }
+
+}
+
+/* Footer mobile spacing tweaks --> makes stacked footer items more airy on small screens */
+@media only screen and (max-width: 767px) {
+
+    .sedgemore-footer {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .sedgemore-footer .sedgemore-title {
+        font-size: 28px;
+        line-height: 1.15;
+        letter-spacing: 3px;
+        margin-bottom: 0.75rem;
+    }
+
+    .sedgemore-footer .sedgemore-text p {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .sedgemore-footer .sedgemore-list li {
+        margin-bottom: 0.75rem;
+    }
+
+    .sedgemore-footer .grid {
+        gap: 1.5rem;
+        row-gap: 1.5rem;
+    }
+
+    .sedgemore-footer .floating-label-group {
+        margin-bottom: 20px;
+    }
+
+    .sedgemore-footer .sedgemore-legacy-container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+}
+
+@media only screen and (min-width: 1924px) {
+
+    .sedgemore-our-work-grid-item--height{        
+        max-height:900px;
+    }
+
+    .xl\:text-xl{
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    .xl\:text-2xl{
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    .xl\:text-5xl{
+        font-size:2rem;
+        line-height:2.5rem;
+    }
+
+    .lg\:w-1\/4{
+        width:25%;
+    }     
+
+
+    .xl\:w-1\/3{
+        width:33.33333%;
+    } 
+
+    .xl\:w-1\/2{
+        width:50%;
+    }
+
+    .xl\:w-2\/3{
+        width:66.66666%;
+    }    
+
+    .xl\:w-full{
+        width:100%;
+    }    
+
+
+    .xl\:basis-1\/2{
+        flex-basis: 50%;
+    }
+
+    .xl\:pr-16{
+        padding-right:4rem;
+    }
+
+    .xl\:pl-16{
+        padding-left:4rem;
+    } 
+
+
+    .xl\:pr-32{
+        padding-right:8rem;
+    }  
+    
+    .xl\:pb-32{
+        padding-bottom:8rem;
+    }      
+
+    .xl\:pb-40{
+        padding-bottom:10rem;
+    }          
+
+    .xl\:pt-40{
+        padding-top:10rem;
+    }   
+
+    .xl\:pr-64{
+        padding-right:16rem;
+    }     
+
+    .xl\:pb-64{
+        padding-bottom:16rem;
+    }      
+
+}
+
+/* Strong footer font overrides: ensure inputs, labels and small text use the footer body font
+   without affecting footer display/title font. Placed at file-end so it wins the cascade. */
+.sedgemore-footer input,
+.sedgemore-footer textarea,
+.sedgemore-footer select,
+.sedgemore-footer button,
+.sedgemore-footer label,
+.sedgemore-footer .floating-label-group input,
+.sedgemore-footer .floating-label-group textarea,
+.sedgemore-footer .sedgemore-text,
+.sedgemore-footer .sedgemore-text p,
+.sedgemore-footer .text-xs,
+.sedgemore-footer .text-xs p,
+.sedgemore-footer .flex,
+.sedgemore-footer .gap-6,
+.sedgemore-footer .gap-4,
+.sedgemore-footer .gap-2 {
+    font-family: var(--footer-body-font) !important;
+    font-weight: 300 !important;
+    font-size: 15px !important;
+    line-height: 1.75 !important;
+    letter-spacing: 0.02em !important;
+}
+
+/* placeholder text should match footer body font */
+.sedgemore-footer input::placeholder,
+.sedgemore-footer textarea::placeholder {
+    font-family: var(--footer-body-font) !important;
+    color: #999 !important;
+}
+
+/* Keep footer titles using the display font (Cormorant) */
+.sedgemore-footer .sedgemore-title,
+.sedgemore-footer h4.sedgemore-title,
+.sedgemore-footer .h4.sedgemore-title {
+    font-family: var(--footer-display-font) !important;
+}
+
+/* Footer column headings (non-title) should follow body font choice */
+.sedgemore-footer h4:not(.sedgemore-title),
+.sedgemore-footer .h4:not(.sedgemore-title) {
+    font-family: var(--footer-body-font) !important;
+}
+
+/* Emergency catch-all: scope to non-title elements only so titles keep display font */
+.sedgemore-footer *:not(.sedgemore-title):not(h4.sedgemore-title) {
+    font-family: var(--footer-body-font) !important;
+}
