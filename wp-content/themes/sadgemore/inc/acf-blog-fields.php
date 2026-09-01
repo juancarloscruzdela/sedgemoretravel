@@ -679,12 +679,30 @@ function sadgemore_register_blog_editorial_fields() {
 							'label' => 'CTA label',
 							'name'  => 'cta_label',
 							'type'  => 'text',
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'closing',
+									),
+								),
+							),
 						),
 						array(
 							'key'   => 'field_editorial_block_cta_url',
 							'label' => 'CTA URL',
 							'name'  => 'cta_url',
 							'type'  => 'text',
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'closing',
+									),
+								),
+							),
 						),
 					),
 				),
