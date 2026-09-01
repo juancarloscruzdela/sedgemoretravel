@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/bbdeeaad/public_html/wp-content/themes/sadgemore/
+    - /bin/rsync -av --delete wp-content/themes/sadgemore/ $DEPLOYPATH

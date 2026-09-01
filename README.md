@@ -278,6 +278,74 @@ Removing or hiding Blog Story sections:
 - If you want an entire section removed from the design, ask a developer to hide that section in the template.
 - Do not delete theme files to hide a story or section.
 
+### Blog Editorial Article
+
+Template: `page-templates/blog-editorial.php`
+
+This template follows the Winter Sun HTML reference: narrow editorial column, small uppercase labels, Cormorant headings, large hero image, divider rules, destination-style article sections, image figures, pull quotes, aside notes, closing CTA, and image credits.
+
+Use this template for magazine-style articles where the story is mostly prose and photography, not for itinerary/stat/gallery-heavy posts. The attached HTML file is a visual reference only; the WordPress version is managed through post/page fields.
+
+You can create a Blog Editorial Article in two ways:
+
+- Posts -> Add New -> select the `Blog Editorial Article` template if the article belongs in the blog/news feed.
+- Pages -> Add New -> select the `Blog Editorial Article` template if it should be a standalone page.
+
+Before using the custom fields, set the normal WordPress fields:
+
+- Title - admin title and fallback front-end title.
+- Slug/permalink - the public URL.
+- Excerpt - fallback standfirst.
+- Featured image - fallback hero image.
+- Categories - optional; used as a fallback label on posts.
+- Status - Draft, Private, Published, or Trash controls whether the article is visible.
+
+Blog Editorial Article tabs:
+
+- Hero
+  - Label - small uppercase label above the headline. Example: `Winter Sun &middot; 2026/27`.
+  - Title - front-end headline. HTML is allowed for emphasis, for example `The Best <em>Escapes</em>`.
+  - Standfirst - short introductory paragraph below the headline.
+  - Byline - small uppercase author line.
+  - Hero image - large image below the heading.
+  - Hero image credit - caption under the hero image. HTML is allowed for emphasis.
+- Intro
+  - Intro paragraphs - opening body copy before the first divider.
+- Article Blocks
+  - Add rows in the exact order they should appear.
+  - Divider - full-width rule between sections. Enable Short divider when needed.
+  - Editorial section - label, heading, and body copy. Use this for destinations or main prose sections.
+  - Image - image plus caption. Enable Portrait image width for narrower vertical images.
+  - Pull quote - large italic quote with a left rule.
+  - Aside / Worth watching - small labelled note section.
+  - Closing CTA - closing label, heading, body, button label, and button URL.
+  - Image credits - final small-print credit section.
+
+Recommended block order to match the Winter Sun reference:
+
+1. Fill Hero fields.
+2. Fill Intro paragraphs.
+3. Add Divider.
+4. Add Editorial section.
+5. Repeat Divider, Editorial section, and Image blocks as needed.
+6. Add Pull quote after an image when the article needs emphasis.
+7. Add Short divider before a planning or closing note when the design needs a lighter pause.
+8. Add Aside / Worth watching.
+9. Add Closing CTA.
+10. Add Divider.
+11. Add Image credits.
+
+Managing Blog Editorial Articles:
+
+- Create: add a post/page, select the template, fill the fields, preview, then publish.
+- Read/preview: use Preview from the editor, or View after publishing.
+- Update: edit the fields or block rows, click Update, then clear any site cache if the public page still shows old content.
+- Reorder: drag Article Blocks into the desired order.
+- Remove one section: delete that Article Block row and update the post/page.
+- Hide the article: change status to Draft or Private.
+- Delete the article: move it to Trash from the post/page list.
+- Replace images: update the image field; do not delete Media Library files unless they are unused everywhere.
+
 ### Contact and Agreement
 
 Templates:

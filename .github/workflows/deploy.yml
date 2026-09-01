@@ -1,0 +1,61 @@
+name: Deploy WordPress Theme
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "wp-content/themes/sadgemore/**"
+      - ".github/workflows/deploy.yml"
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.KRYSTAL_SSH_KEY }}
+          SSH_HOST: ${{ secrets.KRYSTAL_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/krystal
+          chmod 600 ~/.ssh/krystal
+
+          ssh-keyscan -p 722 "$SSH_HOST" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy to Krystal
+        env:
+          SSH_HOST: ${{ secrets.KRYSTAL_HOST }}
+          SSH_USER: ${{ secrets.KRYSTAL_USERNAME }}
+        run: |
+          ssh \
+            -i ~/.ssh/krystal \
+            -p 722 \
+            -o IdentitiesOnly=yes \
+            "$SSH_USER@$SSH_HOST" << 'EOF'
+
+          set -e
+
+          REPO="/home/bbdeeaad/repositories/sedgemoretravel"
+          SOURCE="$REPO/wp-content/themes/sadgemore/"
+          DEST="/home/bbdeeaad/public_html/wp-content/themes/sadgemore/"
+
+          echo "Updating repository..."
+          cd "$REPO"
+
+          git fetch origin main
+          git reset --hard origin/main
+
+          echo "Deploying theme..."
+          /bin/rsync -av --delete "$SOURCE" "$DEST"
+
+          echo "Deployment complete."
+          EOF
