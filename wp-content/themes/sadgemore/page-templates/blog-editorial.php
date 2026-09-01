@@ -252,11 +252,6 @@ while ( have_posts() ) :
 							<div class="body">
 								<?php echo wp_kses_post( wpautop( $body ) ); ?>
 							</div>
-							<?php if ( $pull_quote ) : ?>
-								<div class="pull">
-									<?php echo wp_kses_post( wpautop( $pull_quote ) ); ?>
-								</div>
-							<?php endif; ?>
 						</section>
 						<?php if ( $image_url ) : ?>
 							<figure class="media col<?php echo $portrait ? ' portrait' : ''; ?>">
@@ -265,6 +260,11 @@ while ( have_posts() ) :
 									<figcaption class="credit"><?php echo wp_kses_post( $caption ); ?></figcaption>
 								<?php endif; ?>
 							</figure>
+						<?php endif; ?>
+						<?php if ( $pull_quote ) : ?>
+							<div class="pull">
+								<?php echo wp_kses_post( wpautop( $pull_quote ) ); ?>
+							</div>
 						<?php endif; ?>
 						<?php if ( $divider_after ) : ?>
 							<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
