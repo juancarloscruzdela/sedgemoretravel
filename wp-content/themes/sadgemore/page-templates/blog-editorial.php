@@ -119,7 +119,7 @@ while ( have_posts() ) :
 		.editorial-article .movement .eyebrow{display:block;margin-bottom:16px}
 		.editorial-article .movement h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:clamp(26px,3.2vw,35px);line-height:1.16;color:var(--dark);margin:0 0 24px;max-width:22ch}
 		.editorial-article .movement h2 em,.editorial-article .movement h2 i{font-style:italic}
-		.editorial-article .movement p{margin-left:0!important;padding-left:0!important}
+		.editorial-article .movement .body,.editorial-article .movement .body *{margin-left:0!important;padding-left:0!important}
 		.editorial-article .rule{width:100%;margin:56px 0;height:1px;background:rgba(42,42,39,.13)}
 		.editorial-article .rule.short{width:56px;margin:52px 0;background:rgba(42,42,39,.32)}
 		.editorial-article .pull{margin:52px 0;padding-left:26px;border-left:1px solid rgba(42,42,39,.28);max-width:600px}
@@ -246,7 +246,9 @@ while ( have_posts() ) :
 							<?php if ( $title ) : ?>
 								<h2><?php echo wp_kses_post( $title ); ?></h2>
 							<?php endif; ?>
-							<?php echo wp_kses_post( wpautop( $body ) ); ?>
+							<div class="body">
+								<?php echo wp_kses_post( wpautop( $body ) ); ?>
+							</div>
 							<?php if ( $pull_quote ) : ?>
 								<div class="pull">
 									<?php echo wp_kses_post( wpautop( $pull_quote ) ); ?>
