@@ -523,7 +523,7 @@ function sadgemore_register_blog_editorial_fields() {
 					'type'         => 'repeater',
 					'layout'       => 'block',
 					'button_label' => 'Add article block',
-					'instructions' => 'Add blocks in page order. Use Divider blocks between sections to match the reference layout.',
+					'instructions' => 'Add blocks in page order. Editorial sections can include optional dividers and pull quotes.',
 					'sub_fields'   => array(
 						array(
 							'key'     => 'field_editorial_block_type',
@@ -531,11 +531,8 @@ function sadgemore_register_blog_editorial_fields() {
 							'name'    => 'block_type',
 							'type'    => 'select',
 							'choices' => array(
-								'rule'     => 'Divider',
 								'movement' => 'Editorial section',
 								'image'    => 'Image',
-								'pull'     => 'Pull quote',
-								'aside'    => 'Aside / Worth watching',
 								'closing'  => 'Closing CTA',
 								'credits'  => 'Image credits',
 							),
@@ -563,6 +560,54 @@ function sadgemore_register_blog_editorial_fields() {
 							'tabs'         => 'all',
 							'toolbar'      => 'basic',
 							'media_upload' => 0,
+						),
+						array(
+							'key'   => 'field_editorial_block_divider_before',
+							'label' => 'Divider before section',
+							'name'  => 'divider_before',
+							'type'  => 'true_false',
+							'ui'    => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'movement',
+									),
+								),
+							),
+						),
+						array(
+							'key'   => 'field_editorial_block_divider_after',
+							'label' => 'Divider after section',
+							'name'  => 'divider_after',
+							'type'  => 'true_false',
+							'ui'    => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'movement',
+									),
+								),
+							),
+						),
+						array(
+							'key'   => 'field_editorial_block_pull_quote',
+							'label' => 'Pull quote',
+							'name'  => 'pull_quote',
+							'type'  => 'textarea',
+							'rows'  => 4,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'movement',
+									),
+								),
+							),
 						),
 						array(
 							'key'           => 'field_editorial_block_image',
@@ -593,6 +638,15 @@ function sadgemore_register_blog_editorial_fields() {
 							'name'  => 'short_rule',
 							'type'  => 'true_false',
 							'ui'    => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'movement',
+									),
+								),
+							),
 						),
 						array(
 							'key'   => 'field_editorial_block_cta_label',

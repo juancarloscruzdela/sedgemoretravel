@@ -183,6 +183,9 @@ while ( have_posts() ) :
 					$caption    = $block['caption'] ?? '';
 					$portrait   = ! empty( $block['portrait_image'] );
 					$short_rule = ! empty( $block['short_rule'] );
+					$divider_before = ! empty( $block['divider_before'] );
+					$divider_after  = ! empty( $block['divider_after'] );
+					$pull_quote     = $block['pull_quote'] ?? '';
 					$cta_label  = $block['cta_label'] ?? '';
 					$cta_url    = $block['cta_url'] ?? '';
 					?>
@@ -231,6 +234,9 @@ while ( have_posts() ) :
 							<?php echo wp_kses_post( wpautop( $body ) ); ?>
 						</section>
 					<?php else : ?>
+						<?php if ( $divider_before ) : ?>
+							<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
+						<?php endif; ?>
 						<section class="movement col">
 							<?php if ( $label ) : ?>
 								<span class="label eyebrow"><?php echo esc_html( $label ); ?></span>
@@ -239,7 +245,15 @@ while ( have_posts() ) :
 								<h2><?php echo wp_kses_post( $title ); ?></h2>
 							<?php endif; ?>
 							<?php echo wp_kses_post( wpautop( $body ) ); ?>
+							<?php if ( $pull_quote ) : ?>
+								<div class="pull">
+									<?php echo wp_kses_post( wpautop( $pull_quote ) ); ?>
+								</div>
+							<?php endif; ?>
 						</section>
+						<?php if ( $divider_after ) : ?>
+							<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
+						<?php endif; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
