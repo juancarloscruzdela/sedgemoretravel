@@ -94,7 +94,7 @@ while ( have_posts() ) :
 		.editorial-article *,
 		.editorial-article *::before,
 		.editorial-article *::after{box-sizing:border-box}
-		.editorial-article{--warm-white:#FAFAF7;--cream:#F5F2ED;--charcoal:#2A2A27;--dark:#1C1A18;--text:#3A3835;--text-light:#7A7672;background:var(--warm-white);color:var(--text);font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.85;font-weight:300;text-align:left;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+		.editorial-article{--warm-white:#FAFAF7;--cream:#F5F2ED;--charcoal:#2A2A27;--dark:#1C1A18;--text:#3A3835;--text-light:#7A7672;background:var(--warm-white);color:var(--text);font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.85;font-weight:300;text-align:left;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:96px}
 		.editorial-article .wrap{max-width:820px;margin:0 auto;padding:0 40px}
 		.editorial-article .wrap > * {
 			padding-left: 0;
