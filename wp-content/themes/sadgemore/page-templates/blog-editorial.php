@@ -105,6 +105,7 @@ while ( have_posts() ) :
 		.editorial-article .standfirst{max-width:520px;margin:26px 0 0;font-size:15px;line-height:1.85;color:var(--text);font-weight:300}
 		.editorial-article .byline{margin-top:30px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-light)}
 		.editorial-article figure{margin:46px 0 0}
+		.editorial-article figure.media{display:block}
 		.editorial-article figure.media img.photo{width:100%;height:auto;display:block;border:1px solid #E5DFD6}
 		.editorial-article figure.portrait{max-width:560px}
 		.editorial-article .hero-fig{margin:46px 0 0}
@@ -118,6 +119,7 @@ while ( have_posts() ) :
 		.editorial-article .movement .eyebrow{display:block;margin-bottom:16px}
 		.editorial-article .movement h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:clamp(26px,3.2vw,35px);line-height:1.16;color:var(--dark);margin:0 0 24px;max-width:22ch}
 		.editorial-article .movement h2 em,.editorial-article .movement h2 i{font-style:italic}
+		.editorial-article .movement p{margin-left:0!important;padding-left:0!important}
 		.editorial-article .rule{width:100%;margin:56px 0;height:1px;background:rgba(42,42,39,.13)}
 		.editorial-article .rule.short{width:56px;margin:52px 0;background:rgba(42,42,39,.32)}
 		.editorial-article .pull{margin:52px 0;padding-left:26px;border-left:1px solid rgba(42,42,39,.28);max-width:600px}
@@ -193,7 +195,7 @@ while ( have_posts() ) :
 					<?php if ( 'rule' === $type ) : ?>
 						<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
 					<?php elseif ( 'image' === $type && $image_url ) : ?>
-						<figure class="media col<?php echo $portrait ? ' portrait' : ''; ?>"<?php echo $portrait ? '' : ' style="max-width:none;"'; ?>>
+						<figure class="media col<?php echo $portrait ? ' portrait' : ''; ?>">
 							<img class="photo" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( wp_strip_all_tags( $caption ? $caption : $title ) ); ?>">
 							<?php if ( $caption ) : ?>
 								<figcaption class="credit"><?php echo wp_kses_post( $caption ); ?></figcaption>
@@ -252,7 +254,7 @@ while ( have_posts() ) :
 							<?php endif; ?>
 						</section>
 						<?php if ( $image_url ) : ?>
-							<figure class="media col<?php echo $portrait ? ' portrait' : ''; ?>"<?php echo $portrait ? '' : ' style="max-width:none;"'; ?>>
+							<figure class="media col<?php echo $portrait ? ' portrait' : ''; ?>">
 								<img class="photo" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( wp_strip_all_tags( $caption ? $caption : $title ) ); ?>">
 								<?php if ( $caption ) : ?>
 									<figcaption class="credit"><?php echo wp_kses_post( $caption ); ?></figcaption>
