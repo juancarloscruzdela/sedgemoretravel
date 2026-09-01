@@ -251,6 +251,14 @@ while ( have_posts() ) :
 								</div>
 							<?php endif; ?>
 						</section>
+						<?php if ( $image_url ) : ?>
+							<figure class="media col<?php echo $portrait ? ' portrait' : ''; ?>"<?php echo $portrait ? '' : ' style="max-width:none;"'; ?>>
+								<img class="photo" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( wp_strip_all_tags( $caption ? $caption : $title ) ); ?>">
+								<?php if ( $caption ) : ?>
+									<figcaption class="credit"><?php echo wp_kses_post( $caption ); ?></figcaption>
+								<?php endif; ?>
+							</figure>
+						<?php endif; ?>
 						<?php if ( $divider_after ) : ?>
 							<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
 						<?php endif; ?>

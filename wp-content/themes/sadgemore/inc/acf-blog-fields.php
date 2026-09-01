@@ -532,7 +532,6 @@ function sadgemore_register_blog_editorial_fields() {
 							'type'    => 'select',
 							'choices' => array(
 								'movement' => 'Editorial section',
-								'image'    => 'Image',
 								'closing'  => 'Closing CTA',
 								'credits'  => 'Image credits',
 							),
@@ -617,6 +616,15 @@ function sadgemore_register_blog_editorial_fields() {
 							'return_format' => 'id',
 							'preview_size'  => 'medium',
 							'library'       => 'all',
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'movement',
+									),
+								),
+							),
 						),
 						array(
 							'key'          => 'field_editorial_block_caption',
@@ -624,6 +632,15 @@ function sadgemore_register_blog_editorial_fields() {
 							'name'         => 'caption',
 							'type'         => 'text',
 							'instructions' => 'HTML is allowed for emphasis.',
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'movement',
+									),
+								),
+							),
 						),
 						array(
 							'key'   => 'field_editorial_block_portrait',
@@ -631,6 +648,15 @@ function sadgemore_register_blog_editorial_fields() {
 							'name'  => 'portrait_image',
 							'type'  => 'true_false',
 							'ui'    => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field'    => 'field_editorial_block_type',
+										'operator' => '==',
+										'value'    => 'movement',
+									),
+								),
+							),
 						),
 						array(
 							'key'   => 'field_editorial_block_short_rule',
