@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Configure SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.KRYSTAL_SSH_KEY }}
@@ -36,26 +39,38 @@ jobs:
           SSH_HOST: ${{ secrets.KRYSTAL_HOST }}
           SSH_USER: ${{ secrets.KRYSTAL_USERNAME }}
         run: |
+          set -euo pipefail
+
+          REMOTE="$SSH_USER@$SSH_HOST"
+          DEST="/home/bbdeeaad/public_html/wp-content/themes/sadgemore/"
+
+          echo "Creating live theme directory..."
+          ssh -i ~/.ssh/krystal -p 722 -o IdentitiesOnly=yes "$REMOTE" "mkdir -p '$DEST'"
+
+          echo "Deploying theme from GitHub checkout..."
+          rsync -az --delete --itemize-changes \
+            -e "ssh -i ~/.ssh/krystal -p 722 -o IdentitiesOnly=yes" \
+            wp-content/themes/sadgemore/ \
+            "$REMOTE:$DEST"
+
+          echo "Verifying deployed theme..."
           ssh \
             -i ~/.ssh/krystal \
             -p 722 \
             -o IdentitiesOnly=yes \
-            "$SSH_USER@$SSH_HOST" << 'EOF'
-
+            "$REMOTE" << 'EOF'
           set -e
 
-          REPO="/home/bbdeeaad/repositories/sedgemoretravel"
-          SOURCE="$REPO/wp-content/themes/sadgemore/"
-          DEST="/home/bbdeeaad/public_html/wp-content/themes/sadgemore/"
+          WP_PATH="/home/bbdeeaad/public_html"
+          THEME_PATH="$WP_PATH/wp-content/themes/sadgemore"
 
-          echo "Updating repository..."
-          cd "$REPO"
+          test -f "$THEME_PATH/style.css"
+          test -d "$THEME_PATH/page-templates"
 
-          git fetch origin main
-          git reset --hard origin/main
-
-          echo "Deploying theme..."
-          /bin/rsync -av --delete "$SOURCE" "$DEST"
+          cd "$WP_PATH"
+          wp cache flush || true
+          wp theme activate sadgemore
+          wp theme list
 
           echo "Deployment complete."
           EOF
