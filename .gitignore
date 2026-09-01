@@ -109,7 +109,7 @@ wp-content/themes/sadgemore/**/*_14_*
 wp-admin/
 wp-includes/
 wp-*.php
-index.php
+/index.php
 xmlrpc.php
 readme.html
 license.txt
