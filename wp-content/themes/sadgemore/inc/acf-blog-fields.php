@@ -561,38 +561,6 @@ function sadgemore_register_blog_editorial_fields() {
 							'media_upload' => 0,
 						),
 						array(
-							'key'   => 'field_editorial_block_divider_before',
-							'label' => 'Divider before section',
-							'name'  => 'divider_before',
-							'type'  => 'true_false',
-							'ui'    => 1,
-							'conditional_logic' => array(
-								array(
-									array(
-										'field'    => 'field_editorial_block_type',
-										'operator' => '==',
-										'value'    => 'movement',
-									),
-								),
-							),
-						),
-						array(
-							'key'   => 'field_editorial_block_divider_after',
-							'label' => 'Divider after section',
-							'name'  => 'divider_after',
-							'type'  => 'true_false',
-							'ui'    => 1,
-							'conditional_logic' => array(
-								array(
-									array(
-										'field'    => 'field_editorial_block_type',
-										'operator' => '==',
-										'value'    => 'movement',
-									),
-								),
-							),
-						),
-						array(
 							'key'   => 'field_editorial_block_pull_quote',
 							'label' => 'Pull quote',
 							'name'  => 'pull_quote',
@@ -646,22 +614,6 @@ function sadgemore_register_blog_editorial_fields() {
 							'key'   => 'field_editorial_block_portrait',
 							'label' => 'Portrait image width',
 							'name'  => 'portrait_image',
-							'type'  => 'true_false',
-							'ui'    => 1,
-							'conditional_logic' => array(
-								array(
-									array(
-										'field'    => 'field_editorial_block_type',
-										'operator' => '==',
-										'value'    => 'movement',
-									),
-								),
-							),
-						),
-						array(
-							'key'   => 'field_editorial_block_short_rule',
-							'label' => 'Short divider',
-							'name'  => 'short_rule',
 							'type'  => 'true_false',
 							'ui'    => 1,
 							'conditional_logic' => array(

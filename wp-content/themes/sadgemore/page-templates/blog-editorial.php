@@ -173,7 +173,7 @@ while ( have_posts() ) :
 			<?php endif; ?>
 
 			<?php if ( is_array( $editorial_blocks ) && ! empty( $editorial_blocks ) ) : ?>
-				<?php foreach ( $editorial_blocks as $block ) : ?>
+				<?php foreach ( $editorial_blocks as $block_index => $block ) : ?>
 					<?php
 					if ( ! is_array( $block ) ) {
 						continue;
@@ -187,16 +187,14 @@ while ( have_posts() ) :
 					$image_url  = sedgemore_editorial_asset_url( $image, 'full' );
 					$caption    = $block['caption'] ?? '';
 					$portrait   = ! empty( $block['portrait_image'] );
-					$short_rule = ! empty( $block['short_rule'] );
-					$divider_before = ! empty( $block['divider_before'] );
-					$divider_after  = ! empty( $block['divider_after'] );
 					$pull_quote     = $block['pull_quote'] ?? '';
 					$cta_label  = $block['cta_label'] ?? '';
 					$cta_url    = $block['cta_url'] ?? '';
+					$is_last_block = array_key_last( $editorial_blocks ) === $block_index;
 					?>
 
 					<?php if ( 'rule' === $type ) : ?>
-						<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
+						<div class="rule"></div>
 					<?php elseif ( 'image' === $type && $image_url ) : ?>
 						<figure class="media col<?php echo $portrait ? ' portrait' : ''; ?>">
 							<img class="photo" src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( wp_strip_all_tags( $caption ? $caption : $title ) ); ?>">
@@ -239,9 +237,6 @@ while ( have_posts() ) :
 							<?php echo wp_kses_post( wpautop( $body ) ); ?>
 						</section>
 					<?php else : ?>
-						<?php if ( $divider_before ) : ?>
-							<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
-						<?php endif; ?>
 						<section class="movement col">
 							<?php if ( $label ) : ?>
 								<span class="label eyebrow"><?php echo esc_html( $label ); ?></span>
@@ -266,9 +261,9 @@ while ( have_posts() ) :
 								<?php echo wp_kses_post( wpautop( $pull_quote ) ); ?>
 							</div>
 						<?php endif; ?>
-						<?php if ( $divider_after ) : ?>
-							<div class="rule<?php echo $short_rule ? ' short' : ''; ?>"></div>
-						<?php endif; ?>
+					<?php endif; ?>
+					<?php if ( ! $is_last_block ) : ?>
+						<div class="rule"></div>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
