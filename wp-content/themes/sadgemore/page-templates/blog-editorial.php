@@ -141,7 +141,7 @@ while ( have_posts() ) :
 		.editorial-article .credits p{font-size:12px;line-height:1.75;color:var(--text-light);max-width:640px}
 		.editorial-article .tail{padding:72px 0 0}
 		.editorial-article .foot{padding:56px 0 96px}
-		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:56px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}}
+		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:80px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}}
 	</style>
 
 	<article class="editorial-article">
