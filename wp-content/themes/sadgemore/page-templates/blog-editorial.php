@@ -44,6 +44,11 @@ if ( ! function_exists( 'sedgemore_editorial_asset_url' ) ) {
 }
 
 get_header();
+?>
+<div class="header_nav nav-menu">
+	<?php get_template_part( 'template-parts/header_nav_inner' ); ?>
+</div>
+<?php
 
 while ( have_posts() ) :
 	the_post();

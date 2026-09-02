@@ -239,18 +239,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const burgerIconBright = document.getElementById('burger-icon-bright');
     const navMenu = document.querySelector('.nav-menu');
 
-    // 2. Add an event listener to the burger icon
-    burgerIconDark.addEventListener('click', () => {
-        navMenu.classList.toggle('open');
-    });
+    if (!navMenu) {
+        return;
+    }
 
-    burgerIconBright.addEventListener('click', () => {
-        navMenu.classList.toggle('open');
-    });
+    // 2. Add an event listener to whichever burger icon this page renders
+    if (burgerIconDark) {
+        burgerIconDark.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+    }
 
-    closeIcon.addEventListener('click', (e) => {
-        navMenu.classList.remove('open');
-    });
+    if (burgerIconBright) {
+        burgerIconBright.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+    }
+
+    if (closeIcon) {
+        closeIcon.addEventListener('click', (e) => {
+            navMenu.classList.remove('open');
+        });
+    }
 
     // Now handle the movement of the window to remove the class open 
 
