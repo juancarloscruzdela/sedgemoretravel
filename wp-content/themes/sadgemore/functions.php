@@ -243,7 +243,7 @@ function sadgemore_scripts() {
 		'ajaxurl' => admin_url( 'admin-ajax.php' )
 	));	
 
-	wp_enqueue_script( 'sedgemore', get_template_directory_uri() . '/js/sedgemore.js', array('jquery'), '1.2', true );
+	wp_enqueue_script( 'sedgemore', get_template_directory_uri() . '/js/sedgemore.js', array('jquery'), '1.3', true );
 
 	// If not page id
     if( is_page( [ 826, 

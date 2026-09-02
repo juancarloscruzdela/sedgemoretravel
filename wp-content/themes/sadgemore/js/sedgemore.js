@@ -256,11 +256,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (closeIcon) {
-        closeIcon.addEventListener('click', (e) => {
-            navMenu.classList.remove('open');
+    function closeNavMenus() {
+        document.querySelectorAll('.nav-menu.open').forEach(menu => {
+            menu.classList.remove('open');
         });
     }
+
+    if (closeIcon) {
+        closeIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeNavMenus();
+        });
+    }
+
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.close-icon')) {
+            e.preventDefault();
+            closeNavMenus();
+        }
+    });
 
     // Now handle the movement of the window to remove the class open 
 
