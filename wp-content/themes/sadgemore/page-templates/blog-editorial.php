@@ -170,6 +170,9 @@ while ( have_posts() ) :
 				<div class="intro col">
 					<?php echo wp_kses_post( wpautop( $editorial_intro ) ); ?>
 				</div>
+				<?php if ( is_array( $editorial_blocks ) && ! empty( $editorial_blocks ) ) : ?>
+					<div class="rule"></div>
+				<?php endif; ?>
 			<?php endif; ?>
 
 			<?php if ( is_array( $editorial_blocks ) && ! empty( $editorial_blocks ) ) : ?>
