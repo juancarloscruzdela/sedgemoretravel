@@ -44,8 +44,13 @@
             is_page_template('page-templates/concierge.php') ||
             is_page_template('page-templates/our-work.php') ||
             is_page_template('page-templates/contact_us.php') ||
+            is_page_template('page-templates/blog-editorial.php') ||
             is_page_template('page-templates/agreement.php')
          ) ) {
+         $force_black_header = true;
+      }
+
+      if ( function_exists( 'get_page_template_slug' ) && 'page-templates/blog-editorial.php' === get_page_template_slug( get_queried_object_id() ) ) {
          $force_black_header = true;
       }
 
@@ -67,6 +72,10 @@
          }
          .header_new.force-black-header .clickable--search-open::before {
             background-image: url('<?php echo esc_url( get_template_directory_uri() . '/assets/images/search_black.png' ); ?>') !important;
+         }
+         .header_new.force-black-header .burger-icon,
+         .header_new.force-black-header .burger-icon svg {
+            color: #2A2A27 !important;
          }
          .header_new.force-black-header { position: fixed; width:100%; top:0; left:0; z-index:999; }
          /* keep transparent on initial load, but allow the scroll class to set a solid background */
