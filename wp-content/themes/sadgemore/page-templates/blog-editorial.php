@@ -87,6 +87,49 @@ while ( have_posts() ) :
 		$editorial_intro = get_the_content( null, false );
 	}
 
+	$editorial_toc_items        = array();
+	$editorial_block_anchor_ids = array();
+	$editorial_anchor_counts    = array();
+
+	if ( is_array( $editorial_blocks ) && ! empty( $editorial_blocks ) ) {
+		foreach ( $editorial_blocks as $block_index => $block ) {
+			if ( ! is_array( $block ) ) {
+				continue;
+			}
+
+			$type = $block['block_type'] ?? 'movement';
+
+			if ( 'movement' !== $type ) {
+				continue;
+			}
+
+			$anchor_source = ! empty( $block['label'] ) ? $block['label'] : ( $block['title'] ?? '' );
+			$anchor_text   = trim( wp_strip_all_tags( html_entity_decode( (string) $anchor_source, ENT_QUOTES, get_bloginfo( 'charset' ) ) ) );
+			$anchor_text = preg_replace( '/\s+/', ' ', $anchor_text );
+
+			if ( ! $anchor_text ) {
+				continue;
+			}
+
+			$toc_label = strtoupper( $anchor_text ) === $anchor_text ? ucwords( strtolower( $anchor_text ) ) : $anchor_text;
+
+			$anchor_id = sanitize_title( $anchor_text );
+
+			if ( isset( $editorial_anchor_counts[ $anchor_id ] ) ) {
+				$editorial_anchor_counts[ $anchor_id ]++;
+				$anchor_id .= '-' . $editorial_anchor_counts[ $anchor_id ];
+			} else {
+				$editorial_anchor_counts[ $anchor_id ] = 1;
+			}
+
+			$editorial_block_anchor_ids[ $block_index ] = $anchor_id;
+			$editorial_toc_items[] = array(
+				'id'    => $anchor_id,
+				'label' => $toc_label,
+			);
+		}
+	}
+
 	$hero_image_url = sedgemore_editorial_asset_url( $editorial_hero_image, 'full' );
 	?>
 
@@ -99,7 +142,7 @@ while ( have_posts() ) :
 		.editorial-article *,
 		.editorial-article *::before,
 		.editorial-article *::after{box-sizing:border-box}
-		.editorial-article{--warm-white:#FAFAF7;--cream:#F5F2ED;--charcoal:#2A2A27;--dark:#1C1A18;--text:#3A3835;--text-light:#7A7672;background:var(--warm-white);color:var(--text);font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.85;font-weight:300;text-align:left;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:96px}
+		.editorial-article{--warm-white:#FAFAF7;--cream:#F5F2ED;--charcoal:#2A2A27;--dark:#1C1A18;--text:#3A3835;--text-light:#7A7672;background:var(--warm-white);color:var(--text);font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.85;font-weight:300;text-align:left;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:96px;position:relative}
 		.editorial-article .wrap{max-width:820px;margin:0 auto;padding:0 40px}
 		.editorial-article .wrap > * {
 			padding-left: 0;
@@ -121,10 +164,16 @@ while ( have_posts() ) :
 		.editorial-article figcaption.credit{margin-top:11px;font-size:11px;letter-spacing:.05em;color:var(--text-light)}
 		.editorial-article figcaption.credit em,.editorial-article figcaption.credit i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:13px;color:var(--charcoal)}
 		.editorial-article .intro{padding-top:52px}
+		.editorial-article .article-toc{font-family:'Montserrat',Helvetica,Arial,sans-serif}
+		.editorial-article .article-toc__title{display:block;margin-bottom:18px;color:var(--text-light);font-size:10px;font-weight:500;letter-spacing:.42em;text-transform:uppercase}
+		.editorial-article .article-toc__track{display:flex;flex-direction:column;gap:13px}
+		.editorial-article .article-toc__link{display:block;padding-left:16px;border-left:1px solid transparent;color:var(--text-light);font-size:12px;font-weight:300;letter-spacing:.14em;line-height:1.35;text-decoration:none;transition:border-color .25s ease,color .25s ease}
+		.editorial-article .article-toc__link:hover,.editorial-article .article-toc__link.is-active{border-left-color:var(--dark);color:var(--dark)}
 		.editorial-article p{margin:0 0 24px;color:var(--text)}
 		.editorial-article p:last-child{margin-bottom:0}
 		.editorial-article strong{font-weight:500;color:var(--charcoal)}
 		.editorial-article .movement .eyebrow{display:block;margin-bottom:16px}
+		.editorial-article .movement[id]{scroll-margin-top:132px}
 		.editorial-article .movement h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:clamp(26px,3.2vw,35px);line-height:1.16;color:var(--dark);margin:0 0 24px;max-width:22ch}
 		.editorial-article .movement h2 em,.editorial-article .movement h2 i{font-style:italic}
 		.editorial-article .movement .body,.editorial-article .movement .body *{margin-left:0!important;padding-left:0!important}
@@ -146,7 +195,9 @@ while ( have_posts() ) :
 		.editorial-article .credits p{font-size:12px;line-height:1.75;color:var(--text-light);max-width:640px}
 		.editorial-article .tail{padding:72px 0 0}
 		.editorial-article .foot{padding:56px 0 96px}
-		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:80px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}}
+		@media (min-width:1180px){.editorial-article .article-toc{position:fixed;top:50%;left:max(34px,calc((100vw - 1180px)/2));z-index:30;width:190px;transform:translateY(-50%);padding:20px 0;pointer-events:auto}.editorial-article .article-toc__track{max-height:calc(100vh - 260px);overflow-y:auto;padding-right:8px}.editorial-article .article-toc__track::-webkit-scrollbar{width:2px}.editorial-article .article-toc__track::-webkit-scrollbar-thumb{background:rgba(42,42,39,.18)}}
+		@media (max-width:1179px){.editorial-article .article-toc{position:sticky;top:88px;z-index:30;margin:40px 0 0;padding:13px 0 12px;background:rgba(250,250,247,.96);border-top:1px solid rgba(42,42,39,.13);border-bottom:1px solid rgba(42,42,39,.13);backdrop-filter:blur(8px)}.editorial-article .article-toc__title{margin-bottom:10px;font-size:9px;letter-spacing:.35em}.editorial-article .article-toc__track{display:flex;flex-direction:row;gap:18px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding:0 0 4px}.editorial-article .article-toc__track::-webkit-scrollbar{display:none}.editorial-article .article-toc__link{flex:0 0 auto;scroll-snap-align:start;white-space:nowrap;padding-left:12px;font-size:11px;letter-spacing:.12em}}
+		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:80px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}.editorial-article .article-toc{top:82px;margin-top:34px}}
 	</style>
 
 	<article class="editorial-article">
@@ -175,6 +226,16 @@ while ( have_posts() ) :
 				<div class="intro col">
 					<?php echo wp_kses_post( wpautop( $editorial_intro ) ); ?>
 				</div>
+				<?php if ( ! empty( $editorial_toc_items ) ) : ?>
+					<nav class="article-toc" aria-label="<?php esc_attr_e( 'In this guide', 'sadgemore' ); ?>">
+						<span class="article-toc__title"><?php esc_html_e( 'In this guide', 'sadgemore' ); ?></span>
+						<div class="article-toc__track">
+							<?php foreach ( $editorial_toc_items as $toc_index => $toc_item ) : ?>
+								<a class="article-toc__link<?php echo 0 === $toc_index ? ' is-active' : ''; ?>" href="#<?php echo esc_attr( $toc_item['id'] ); ?>"><?php echo esc_html( $toc_item['label'] ); ?></a>
+							<?php endforeach; ?>
+						</div>
+					</nav>
+				<?php endif; ?>
 				<?php if ( is_array( $editorial_blocks ) && ! empty( $editorial_blocks ) ) : ?>
 					<div class="rule"></div>
 				<?php endif; ?>
@@ -245,7 +306,7 @@ while ( have_posts() ) :
 							<?php echo wp_kses_post( wpautop( $body ) ); ?>
 						</section>
 					<?php else : ?>
-						<section class="movement col">
+						<section class="movement col"<?php echo isset( $editorial_block_anchor_ids[ $block_index ] ) ? ' id="' . esc_attr( $editorial_block_anchor_ids[ $block_index ] ) . '"' : ''; ?>>
 							<?php if ( $label ) : ?>
 								<span class="label eyebrow"><?php echo esc_html( $label ); ?></span>
 							<?php endif; ?>
@@ -277,6 +338,71 @@ while ( have_posts() ) :
 			<?php endif; ?>
 		</div>
 	</article>
+	<?php if ( ! empty( $editorial_toc_items ) ) : ?>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				var article = document.querySelector('.editorial-article');
+				if (!article) {
+					return;
+				}
+
+				var tocLinks = Array.prototype.slice.call(article.querySelectorAll('.article-toc__link'));
+				if (!tocLinks.length) {
+					return;
+				}
+
+				var sections = tocLinks.map(function (link) {
+					var id = link.getAttribute('href');
+					return id ? document.getElementById(id.slice(1)) : null;
+				}).filter(Boolean);
+
+				function setActive(id) {
+					tocLinks.forEach(function (link) {
+						var isActive = link.getAttribute('href') === '#' + id;
+						link.classList.toggle('is-active', isActive);
+
+						if (isActive && window.innerWidth < 1180) {
+							link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+						}
+					});
+				}
+
+				tocLinks.forEach(function (link) {
+					link.addEventListener('click', function (event) {
+						var id = link.getAttribute('href');
+						var target = id ? document.getElementById(id.slice(1)) : null;
+
+						if (!target) {
+							return;
+						}
+
+						event.preventDefault();
+						var headerOffset = window.innerWidth < 1180 ? 134 : 116;
+						var targetTop = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+						window.scrollTo({ top: targetTop, behavior: 'smooth' });
+						setActive(target.id);
+					});
+				});
+
+				if ('IntersectionObserver' in window) {
+					var observer = new IntersectionObserver(function (entries) {
+						entries.forEach(function (entry) {
+							if (entry.isIntersecting) {
+								setActive(entry.target.id);
+							}
+						});
+					}, {
+						rootMargin: '-36% 0px -54% 0px',
+						threshold: 0
+					});
+
+					sections.forEach(function (section) {
+						observer.observe(section);
+					});
+				}
+			});
+		</script>
+	<?php endif; ?>
 
 <?php
 endwhile;
