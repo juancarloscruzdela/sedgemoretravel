@@ -165,6 +165,7 @@ while ( have_posts() ) :
 		.editorial-article figcaption.credit em,.editorial-article figcaption.credit i{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:13px;color:var(--charcoal)}
 		.editorial-article .intro{padding-top:52px}
 		.editorial-article .article-toc{font-family:'Montserrat',Helvetica,Arial,sans-serif}
+		.editorial-article .article-toc__toggle{display:none}
 		.editorial-article .article-toc__title{display:block;margin-bottom:18px;color:var(--text-light);font-size:10px;font-weight:500;letter-spacing:.42em;text-transform:uppercase}
 		.editorial-article .article-toc__track{display:flex;flex-direction:column;gap:13px}
 		.editorial-article .article-toc__link{display:block;padding-left:16px;border-left:1px solid transparent;color:var(--text-light);font-size:12px;font-weight:300;letter-spacing:.14em;line-height:1.35;text-decoration:none;transition:border-color .25s ease,color .25s ease}
@@ -196,8 +197,8 @@ while ( have_posts() ) :
 		.editorial-article .tail{padding:72px 0 0}
 		.editorial-article .foot{padding:56px 0 96px}
 		@media (min-width:1180px){.editorial-article .article-toc{position:fixed;top:50%;left:max(34px,calc((100vw - 1180px)/2));z-index:30;width:190px;transform:translateY(-50%);padding:20px 0;pointer-events:auto}.editorial-article .article-toc__track{max-height:calc(100vh - 260px);overflow-y:auto;padding-right:8px}.editorial-article .article-toc__track::-webkit-scrollbar{width:2px}.editorial-article .article-toc__track::-webkit-scrollbar-thumb{background:rgba(42,42,39,.18)}}
-		@media (max-width:1179px){.editorial-article .article-toc{position:sticky;top:88px;z-index:30;margin:40px 0 0;padding:13px 0 12px;background:rgba(250,250,247,.96);border-top:1px solid rgba(42,42,39,.13);border-bottom:1px solid rgba(42,42,39,.13);backdrop-filter:blur(8px)}.editorial-article .article-toc__title{margin-bottom:10px;font-size:9px;letter-spacing:.35em}.editorial-article .article-toc__track{display:flex;flex-direction:row;gap:18px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding:0 0 4px}.editorial-article .article-toc__track::-webkit-scrollbar{display:none}.editorial-article .article-toc__link{flex:0 0 auto;scroll-snap-align:start;white-space:nowrap;padding-left:12px;font-size:11px;letter-spacing:.12em}}
-		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:80px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}.editorial-article .article-toc{top:82px;margin-top:34px}}
+		@media (max-width:1179px){.editorial-article .article-toc{position:sticky;top:88px;z-index:30;margin:40px 0 0;background:rgba(250,250,247,.98);border:1px solid rgba(42,42,39,.12);border-radius:28px;box-shadow:0 6px 24px rgba(42,42,39,.08);backdrop-filter:blur(10px);transition:border-radius .2s ease}.editorial-article .article-toc.is-open{border-radius:6px}.editorial-article .article-toc__toggle{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;min-height:54px;padding:0 20px;background:transparent;border:0;color:var(--dark);font-family:'Montserrat',Helvetica,Arial,sans-serif;text-align:left;cursor:pointer}.editorial-article .article-toc__toggle-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:500;letter-spacing:.06em}.editorial-article .article-toc__toggle-prefix{color:var(--text-light);font-size:9px;letter-spacing:.18em;text-transform:uppercase}.editorial-article .article-toc__toggle-text{color:var(--dark)}.editorial-article .article-toc__chevron{flex:0 0 auto;width:8px;height:8px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .25s ease}.editorial-article .article-toc.is-open .article-toc__chevron{transform:rotate(225deg) translate(-2px,-2px)}.editorial-article .article-toc__title{display:none}.editorial-article .article-toc__track{display:none;max-height:min(52vh,420px);overflow-y:auto;padding:4px 20px 18px;border-top:1px solid rgba(42,42,39,.09)}.editorial-article .article-toc.is-open .article-toc__track{display:flex}.editorial-article .article-toc__link{padding:11px 0 11px 14px;font-size:11px;letter-spacing:.12em}.editorial-article .article-toc__link:first-child{margin-top:5px}}
+		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:80px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}.editorial-article .article-toc{top:82px;margin-top:34px}.editorial-article .article-toc__toggle{min-height:52px;padding:0 16px}.editorial-article .article-toc__track{padding-left:16px;padding-right:16px}}
 	</style>
 
 	<article class="editorial-article">
@@ -228,8 +229,12 @@ while ( have_posts() ) :
 				</div>
 				<?php if ( ! empty( $editorial_toc_items ) ) : ?>
 					<nav class="article-toc" aria-label="<?php esc_attr_e( 'In this guide', 'sadgemore' ); ?>">
+						<button class="article-toc__toggle" type="button" aria-expanded="false" aria-controls="editorial-toc-links">
+							<span class="article-toc__toggle-label"><span class="article-toc__toggle-prefix"><?php esc_html_e( 'In this guide:', 'sadgemore' ); ?></span> <span class="article-toc__toggle-text"><?php echo esc_html( $editorial_toc_items[0]['label'] ); ?></span></span>
+							<span class="article-toc__chevron" aria-hidden="true"></span>
+						</button>
 						<span class="article-toc__title"><?php esc_html_e( 'In this guide', 'sadgemore' ); ?></span>
-						<div class="article-toc__track">
+						<div id="editorial-toc-links" class="article-toc__track">
 							<?php foreach ( $editorial_toc_items as $toc_index => $toc_item ) : ?>
 								<a class="article-toc__link<?php echo 0 === $toc_index ? ' is-active' : ''; ?>" href="#<?php echo esc_attr( $toc_item['id'] ); ?>"><?php echo esc_html( $toc_item['label'] ); ?></a>
 							<?php endforeach; ?>
@@ -351,6 +356,40 @@ while ( have_posts() ) :
 					return;
 				}
 
+				var toc = article.querySelector('.article-toc');
+				var tocToggle = article.querySelector('.article-toc__toggle');
+				var tocToggleText = article.querySelector('.article-toc__toggle-text');
+
+				function closeToc() {
+					if (!toc || !tocToggle) {
+						return;
+					}
+
+					toc.classList.remove('is-open');
+					tocToggle.setAttribute('aria-expanded', 'false');
+				}
+
+				if (toc && tocToggle) {
+					tocToggle.addEventListener('click', function () {
+						var willOpen = !toc.classList.contains('is-open');
+						toc.classList.toggle('is-open', willOpen);
+						tocToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+					});
+
+					document.addEventListener('click', function (event) {
+						if (window.innerWidth < 1180 && toc.classList.contains('is-open') && !toc.contains(event.target)) {
+							closeToc();
+						}
+					});
+
+					document.addEventListener('keydown', function (event) {
+						if (event.key === 'Escape' && toc.classList.contains('is-open')) {
+							closeToc();
+							tocToggle.focus();
+						}
+					});
+				}
+
 				var sections = tocLinks.map(function (link) {
 					var id = link.getAttribute('href');
 					return id ? document.getElementById(id.slice(1)) : null;
@@ -361,8 +400,8 @@ while ( have_posts() ) :
 						var isActive = link.getAttribute('href') === '#' + id;
 						link.classList.toggle('is-active', isActive);
 
-						if (isActive && window.innerWidth < 1180) {
-							link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+						if (isActive && tocToggleText) {
+							tocToggleText.textContent = link.textContent.trim();
 						}
 					});
 				}
@@ -381,6 +420,7 @@ while ( have_posts() ) :
 						var targetTop = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
 						window.scrollTo({ top: targetTop, behavior: 'smooth' });
 						setActive(target.id);
+						closeToc();
 					});
 				});
 
