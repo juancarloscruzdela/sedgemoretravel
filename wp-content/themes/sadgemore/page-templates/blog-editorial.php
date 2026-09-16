@@ -197,8 +197,8 @@ while ( have_posts() ) :
 		.editorial-article .tail{padding:72px 0 0}
 		.editorial-article .foot{padding:56px 0 96px}
 		@media (min-width:1180px){.editorial-article .article-toc{position:fixed;top:50%;left:max(34px,calc((100vw - 1180px)/2));z-index:30;width:190px;transform:translateY(-50%);padding:20px 0;pointer-events:auto}.editorial-article .article-toc__track{max-height:calc(100vh - 260px);overflow-y:auto;padding-right:8px}.editorial-article .article-toc__track::-webkit-scrollbar{width:2px}.editorial-article .article-toc__track::-webkit-scrollbar-thumb{background:rgba(42,42,39,.18)}}
-		@media (max-width:1179px){.editorial-article .article-toc{position:sticky;top:88px;z-index:30;margin:40px 0 0;background:rgba(250,250,247,.98);border:1px solid rgba(42,42,39,.12);border-radius:28px;box-shadow:0 6px 24px rgba(42,42,39,.08);backdrop-filter:blur(10px);transition:border-radius .2s ease}.editorial-article .article-toc.is-open{border-radius:6px}.editorial-article .article-toc__toggle{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;min-height:54px;padding:0 20px;background:transparent;border:0;color:var(--dark);font-family:'Montserrat',Helvetica,Arial,sans-serif;text-align:left;cursor:pointer}.editorial-article .article-toc__toggle-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:500;letter-spacing:.06em}.editorial-article .article-toc__toggle-prefix{color:var(--text-light);font-size:9px;letter-spacing:.18em;text-transform:uppercase}.editorial-article .article-toc__toggle-text{color:var(--dark)}.editorial-article .article-toc__chevron{flex:0 0 auto;width:8px;height:8px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .25s ease}.editorial-article .article-toc.is-open .article-toc__chevron{transform:rotate(225deg) translate(-2px,-2px)}.editorial-article .article-toc__title{display:none}.editorial-article .article-toc__track{display:none;max-height:min(52vh,420px);overflow-y:auto;padding:4px 20px 18px;border-top:1px solid rgba(42,42,39,.09)}.editorial-article .article-toc.is-open .article-toc__track{display:flex}.editorial-article .article-toc__link{padding:11px 0 11px 14px;font-size:11px;letter-spacing:.12em}.editorial-article .article-toc__link:first-child{margin-top:5px}}
-		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:80px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}.editorial-article .article-toc{top:82px;margin-top:34px}.editorial-article .article-toc__toggle{min-height:52px;padding:0 16px}.editorial-article .article-toc__track{padding-left:16px;padding-right:16px}}
+		@media (max-width:1179px){.editorial-article .article-toc-slot{min-height:54px;margin:40px 0 0}.editorial-article .article-toc{--toc-sticky-top:88px;position:relative;z-index:30;width:100%;background:rgba(250,250,247,.98);border:1px solid rgba(42,42,39,.12);border-radius:28px;box-shadow:0 6px 24px rgba(42,42,39,.08);backdrop-filter:blur(10px);transition:border-radius .2s ease}.editorial-article .article-toc.is-stuck{position:fixed;top:var(--toc-sticky-top);margin:0}.editorial-article .article-toc.is-open{border-radius:6px}.editorial-article .article-toc__toggle{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;min-height:54px;padding:0 20px;background:transparent;border:0;color:var(--dark);font-family:'Montserrat',Helvetica,Arial,sans-serif;text-align:left;cursor:pointer}.editorial-article .article-toc__toggle-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:500;letter-spacing:.06em}.editorial-article .article-toc__toggle-prefix{color:var(--text-light);font-size:9px;letter-spacing:.18em;text-transform:uppercase}.editorial-article .article-toc__toggle-text{color:var(--dark)}.editorial-article .article-toc__chevron{flex:0 0 auto;width:8px;height:8px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .25s ease}.editorial-article .article-toc.is-open .article-toc__chevron{transform:rotate(225deg) translate(-2px,-2px)}.editorial-article .article-toc__title{display:none}.editorial-article .article-toc__track{display:none;max-height:min(52vh,420px);overflow-y:auto;padding:4px 20px 18px;border-top:1px solid rgba(42,42,39,.09)}.editorial-article .article-toc.is-open .article-toc__track{display:flex}.editorial-article .article-toc__link{padding:11px 0 11px 14px;font-size:11px;letter-spacing:.12em}.editorial-article .article-toc__link:first-child{margin-top:5px}}
+		@media (max-width:640px){.editorial-article .wrap{padding:0 22px}.editorial-article .hero{padding:80px 0 0}.editorial-article .hero-media{height:clamp(280px,44vh,420px)}.editorial-article .article-toc-slot{min-height:52px;margin-top:34px}.editorial-article .article-toc{--toc-sticky-top:82px}.editorial-article .article-toc__toggle{min-height:52px;padding:0 16px}.editorial-article .article-toc__track{padding-left:16px;padding-right:16px}}
 	</style>
 
 	<article class="editorial-article">
@@ -228,6 +228,7 @@ while ( have_posts() ) :
 					<?php echo wp_kses_post( wpautop( $editorial_intro ) ); ?>
 				</div>
 				<?php if ( ! empty( $editorial_toc_items ) ) : ?>
+					<div class="article-toc-slot">
 					<nav class="article-toc" aria-label="<?php esc_attr_e( 'In this guide', 'sadgemore' ); ?>">
 						<button class="article-toc__toggle" type="button" aria-expanded="false" aria-controls="editorial-toc-links">
 							<span class="article-toc__toggle-label"><span class="article-toc__toggle-prefix"><?php esc_html_e( 'In this guide:', 'sadgemore' ); ?></span> <span class="article-toc__toggle-text"><?php echo esc_html( $editorial_toc_items[0]['label'] ); ?></span></span>
@@ -240,6 +241,7 @@ while ( have_posts() ) :
 							<?php endforeach; ?>
 						</div>
 					</nav>
+					</div>
 				<?php endif; ?>
 				<?php if ( is_array( $editorial_blocks ) && ! empty( $editorial_blocks ) ) : ?>
 					<div class="rule"></div>
@@ -357,8 +359,52 @@ while ( have_posts() ) :
 				}
 
 				var toc = article.querySelector('.article-toc');
+				var tocSlot = article.querySelector('.article-toc-slot');
 				var tocToggle = article.querySelector('.article-toc__toggle');
 				var tocToggleText = article.querySelector('.article-toc__toggle-text');
+				var tocTicking = false;
+
+				function updateTocPosition() {
+					if (!toc || !tocSlot) {
+						return;
+					}
+
+					if (window.innerWidth >= 1180) {
+						toc.classList.remove('is-stuck');
+						toc.style.left = '';
+						toc.style.width = '';
+						return;
+					}
+
+					var slotRect = tocSlot.getBoundingClientRect();
+					var stickyTop = parseFloat(window.getComputedStyle(toc).getPropertyValue('--toc-sticky-top')) || 0;
+					var shouldStick = slotRect.top <= stickyTop;
+
+					toc.classList.toggle('is-stuck', shouldStick);
+					if (shouldStick) {
+						toc.style.left = slotRect.left + 'px';
+						toc.style.width = slotRect.width + 'px';
+					} else {
+						toc.style.left = '';
+						toc.style.width = '';
+					}
+				}
+
+				function requestTocPositionUpdate() {
+					if (tocTicking) {
+						return;
+					}
+
+					tocTicking = true;
+					window.requestAnimationFrame(function () {
+						updateTocPosition();
+						tocTicking = false;
+					});
+				}
+
+				updateTocPosition();
+				window.addEventListener('scroll', requestTocPositionUpdate, { passive: true });
+				window.addEventListener('resize', requestTocPositionUpdate);
 
 				function closeToc() {
 					if (!toc || !tocToggle) {
