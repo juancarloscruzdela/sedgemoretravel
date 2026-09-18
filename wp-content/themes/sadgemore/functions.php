@@ -17,6 +17,7 @@ require get_template_directory() . '/inc/acf-our-work-fields.php';
 require get_template_directory() . '/inc/acf-membership-fields.php';
 require get_template_directory() . '/inc/acf-private-yachts-fields.php';
 require get_template_directory() . '/inc/acf-private-villas-fields.php';
+require get_template_directory() . '/inc/acf-collective-fields.php';
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
@@ -245,6 +246,15 @@ function sadgemore_scripts() {
 
 	wp_enqueue_script( 'sedgemore', get_template_directory_uri() . '/js/sedgemore.js', array('jquery'), '1.3', true );
 
+	if ( is_page_template( 'page-templates/collective.php' ) ) {
+		$collective_css = get_template_directory() . '/assets/css/collective.css';
+		$collective_js  = get_template_directory() . '/js/collective.js';
+
+		wp_enqueue_style( 'font-cormorant-garamond', '//fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap', array(), null );
+		wp_enqueue_style( 'sedgemore-collective', get_template_directory_uri() . '/assets/css/collective.css', array( 'font-montserrat', 'font-cormorant-garamond' ), file_exists( $collective_css ) ? filemtime( $collective_css ) : _S_VERSION );
+		wp_enqueue_script( 'sedgemore-collective', get_template_directory_uri() . '/js/collective.js', array(), file_exists( $collective_js ) ? filemtime( $collective_js ) : _S_VERSION, true );
+	}
+
 	// If not page id
     if( is_page( [ 826, 
 	793 /* Staging */, 
@@ -262,6 +272,7 @@ function sadgemore_scripts() {
 	1077, 1127 /* Private Villas */ ] ) ||
 		 is_page_template( 'page-templates/home.php' ) ||
 		 is_page_template( 'page-templates/home-review.php' ) ||
+		 is_page_template( 'page-templates/collective.php' ) ||
 		 is_singular( 'our-work' ) 
 		) {
         

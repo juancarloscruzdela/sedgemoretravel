@@ -45,6 +45,7 @@
             is_page_template('page-templates/our-work.php') ||
             is_page_template('page-templates/contact_us.php') ||
             is_page_template('page-templates/blog-editorial.php') ||
+            is_page_template('page-templates/collective.php') ||
             is_page_template('page-templates/agreement.php')
          ) ) {
          $force_black_header = true;

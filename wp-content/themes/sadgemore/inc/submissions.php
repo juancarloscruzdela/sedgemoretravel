@@ -130,6 +130,7 @@ function sedgemore_submission_meta_box_callback( $post ) {
     $first = get_post_meta( $post->ID, 'first_name', true );
     $last  = get_post_meta( $post->ID, 'last_name', true );
     $email = get_post_meta( $post->ID, 'email', true );
+	$background = get_post_meta( $post->ID, 'background', true );
     $topic = get_post_meta( $post->ID, 'topic_label', true );
     $message = get_post_meta( $post->ID, 'message', true );
     $submitted_at = get_post_meta( $post->ID, 'submitted_at', true );
@@ -156,6 +157,12 @@ function sedgemore_submission_meta_box_callback( $post ) {
                 <th><?php _e( 'Topic', 'sadgemore' ); ?></th>
                 <td><?php echo esc_html( $topic ); ?></td>
             </tr>
+			<?php if ( $background ) : ?>
+			<tr>
+				<th><?php _e( 'Current role or background', 'sadgemore' ); ?></th>
+				<td><?php echo esc_html( $background ); ?></td>
+			</tr>
+			<?php endif; ?>
             <tr>
                 <th><?php _e( 'Submitted at', 'sadgemore' ); ?></th>
                 <td><?php echo esc_html( $submitted_at ); ?></td>
@@ -583,4 +590,3 @@ function sedgemore_submissions_admin_js( $hook ) {
 }
 add_action( 'admin_footer-post.php', 'sedgemore_submissions_admin_js' );
 add_action( 'admin_footer-post-new.php', 'sedgemore_submissions_admin_js' );
-

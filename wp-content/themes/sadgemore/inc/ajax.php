@@ -260,6 +260,84 @@ add_action( 'wp_ajax_home_form', 'home_form' );
 add_action( 'wp_ajax_nopriv_home_form', 'home_form' );
 
 /**
+ * Handle Sedgemore Collective enquiries.
+ */
+function sedgemore_collective_enquiry_form() {
+	if ( ! isset( $_POST['collective_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['collective_nonce'] ) ), 'collective_enquiry_action' ) ) {
+		wp_send_json_error( array( 'message' => 'Security check failed. Please refresh the page and try again.' ) );
+	}
+
+	if ( ! sedgemore_turnstile_is_valid() ) {
+		sedgemore_turnstile_error();
+	}
+
+	$first_name = sanitize_text_field( wp_unslash( $_POST['first_name'] ?? '' ) );
+	$last_name  = sanitize_text_field( wp_unslash( $_POST['last_name'] ?? '' ) );
+	$email      = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
+	$background = sanitize_text_field( wp_unslash( $_POST['background'] ?? '' ) );
+	$message    = sanitize_textarea_field( wp_unslash( $_POST['message'] ?? '' ) );
+
+	if ( empty( $first_name ) || empty( $last_name ) || ! is_email( $email ) || empty( $background ) || empty( $message ) ) {
+		wp_send_json_error( array( 'message' => 'Please complete all required fields.' ) );
+	}
+
+	$topic_label = 'Sedgemore Collective';
+	$post_id     = wp_insert_post(
+		array(
+			'post_type'    => 'sedgemore_submission',
+			'post_status'  => 'private',
+			'post_title'   => wp_strip_all_tags( $first_name . ' ' . $last_name . ' — ' . $topic_label ),
+			'post_content' => $message,
+		)
+	);
+
+	if ( $post_id && ! is_wp_error( $post_id ) ) {
+		update_post_meta( $post_id, 'first_name', $first_name );
+		update_post_meta( $post_id, 'last_name', $last_name );
+		update_post_meta( $post_id, 'email', $email );
+		update_post_meta( $post_id, 'background', $background );
+		update_post_meta( $post_id, 'topic', array( 'collective' ) );
+		update_post_meta( $post_id, 'topic_label', $topic_label );
+		update_post_meta( $post_id, 'message', $message );
+		update_post_meta( $post_id, 'submitted_at', current_time( 'mysql' ) );
+	}
+
+	$to           = get_option( 'sedgemore_submissions_email', 'info@sedgemoretravel.com' );
+	$prefix       = get_option( 'sedgemore_submissions_subject_prefix', 'Sedgemore' );
+	$mail_subject = sanitize_text_field( $prefix ) . ' - Collective enquiry - ' . $first_name . ' ' . $last_name;
+	$body         = '<p><strong>New Sedgemore Collective enquiry</strong></p><table><tbody>'
+		. '<tr><td><strong>Name:</strong></td><td>' . esc_html( $first_name . ' ' . $last_name ) . '</td></tr>'
+		. '<tr><td><strong>Email:</strong></td><td>' . esc_html( $email ) . '</td></tr>'
+		. '<tr><td><strong>Current role or background:</strong></td><td>' . esc_html( $background ) . '</td></tr>'
+		. '<tr><td><strong>Message:</strong></td><td>' . nl2br( esc_html( $message ) ) . '</td></tr>'
+		. '</tbody></table>';
+	$headers      = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Sedgemore <info@sedgemoretravel.com>',
+		'Reply-To: ' . $first_name . ' ' . $last_name . ' <' . $email . '>',
+	);
+	$cc           = get_option( 'sedgemore_submissions_cc', '' );
+
+	if ( is_email( $cc ) ) {
+		$headers[] = 'Cc: ' . $cc;
+	}
+
+	$result = wp_mail( $to, $mail_subject, $body, $headers );
+
+	if ( $post_id && ! is_wp_error( $post_id ) ) {
+		update_post_meta( $post_id, 'mail_sent', $result ? 'yes' : 'no' );
+	}
+
+	if ( $result ) {
+		wp_send_json_success( array( 'message' => 'Thank you. Your enquiry has been sent and our team will be in touch.' ) );
+	}
+
+	wp_send_json_error( array( 'message' => 'Your enquiry was saved, but the notification email could not be sent. Please try again later.' ) );
+}
+add_action( 'wp_ajax_collective_enquiry_form', 'sedgemore_collective_enquiry_form' );
+add_action( 'wp_ajax_nopriv_collective_enquiry_form', 'sedgemore_collective_enquiry_form' );
+
+/**
  * Temporary debug endpoint: echoes back POST and headers to help diagnose admin-ajax issues.
  * Remove this in production.
  */
