@@ -82,9 +82,10 @@ $right_menu = get_field( 'right_menu', 'option' );
              $right_menu_count++;
             }
             
-        }
-        ?>
+	        }
+	        ?>
+	        <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="md:hidden uppercase tracking-adjusted text-blacks-500 inline-block wow fadeInLeft" style="visibility: visible; animation-delay: 0.9s;">Contact Us</a>
 
-    </div>
+	    </div>
 
 </div>
