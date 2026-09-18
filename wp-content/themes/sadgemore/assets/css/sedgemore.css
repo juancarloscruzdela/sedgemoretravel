@@ -1614,8 +1614,16 @@ ul:not(.owl).list-disc li{
     color:var(--color-blacks-700);
 }
 
+.mobile-nav-only{
+    display:none !important;
+}
+
 /* New layout of header nav */
 @media only screen and (max-width: 767px) {
+
+    .mobile-nav-only{
+        display:inline-block !important;
+    }
 
     /* For ease, only set this for smaller viewports */
     .header_nav{
