@@ -7,12 +7,26 @@ function sedgemore_turnstile_is_valid() {
 	$token = sanitize_text_field( wp_unslash( $_POST['cf-turnstile-response'] ?? '' ) );
 
 	if ( empty( $token ) ) {
+		error_log( 'Sedgemore Turnstile diagnostic: ' . wp_json_encode( array(
+			'success'     => false,
+			'error-codes' => array( 'missing-input-response' ),
+			'hostname'    => null,
+			'action'      => null,
+			'http-status' => null,
+		) ) );
 		return false;
 	}
 
 	$secret_key = defined( 'SEDGEMORE_TURNSTILE_SECRET_KEY' ) ? SEDGEMORE_TURNSTILE_SECRET_KEY : getenv( 'SEDGEMORE_TURNSTILE_SECRET_KEY' );
 
 	if ( empty( $secret_key ) ) {
+		error_log( 'Sedgemore Turnstile diagnostic: ' . wp_json_encode( array(
+			'success'     => false,
+			'error-codes' => array( 'missing-secret-configuration' ),
+			'hostname'    => null,
+			'action'      => null,
+			'http-status' => null,
+		) ) );
 		return false;
 	}
 
@@ -25,12 +39,44 @@ function sedgemore_turnstile_is_valid() {
 		),
     ) );
 
-    if ( is_wp_error( $response ) ) {
-        return false;
-    }
+	if ( is_wp_error( $response ) ) {
+		error_log( 'Sedgemore Turnstile diagnostic: ' . wp_json_encode( array(
+			'success'     => false,
+			'error-codes' => array( 'siteverify-transport-error' ),
+			'hostname'    => null,
+			'action'      => null,
+			'http-status' => null,
+		) ) );
+		return false;
+	}
 
-    $body = json_decode( wp_remote_retrieve_body( $response ), true );
-    return ! empty( $body['success'] );
+	$http_status = wp_remote_retrieve_response_code( $response );
+	$body        = json_decode( wp_remote_retrieve_body( $response ), true );
+
+	if ( ! is_array( $body ) ) {
+		error_log( 'Sedgemore Turnstile diagnostic: ' . wp_json_encode( array(
+			'success'     => false,
+			'error-codes' => array( 'invalid-siteverify-json' ),
+			'hostname'    => null,
+			'action'      => null,
+			'http-status' => $http_status,
+		) ) );
+		return false;
+	}
+
+	$diagnostic = array(
+		'success'     => ! empty( $body['success'] ),
+		'error-codes' => isset( $body['error-codes'] ) && is_array( $body['error-codes'] )
+			? array_map( 'sanitize_key', $body['error-codes'] )
+			: array(),
+		'hostname'    => isset( $body['hostname'] ) ? sanitize_text_field( $body['hostname'] ) : null,
+		'action'      => isset( $body['action'] ) ? sanitize_text_field( $body['action'] ) : null,
+		'http-status' => $http_status,
+	);
+
+	error_log( 'Sedgemore Turnstile diagnostic: ' . wp_json_encode( $diagnostic ) );
+
+	return $diagnostic['success'];
 }
 
 function sedgemore_turnstile_error() {
