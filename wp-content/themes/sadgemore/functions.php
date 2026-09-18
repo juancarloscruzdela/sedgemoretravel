@@ -180,7 +180,7 @@ function sadgemore_scripts() {
 	wp_enqueue_style( 'fancybox', get_template_directory_uri() . '/assets/css/jquery.fancybox.min.css', array(), '' );
 	wp_enqueue_style( 'bootstrap-touchspin', get_template_directory_uri() . '/assets/css/jquery.bootstrap-touchspin.css', array(), '' );
 	wp_enqueue_style( 'jquery.mCustomScrollbar', get_template_directory_uri() . '/assets/css/jquery.mCustomScrollbar.min.css', array(), '' );
-	wp_enqueue_style( 'sedgemore', get_template_directory_uri() . '/assets/css/sedgemore.css', array(), '1.0.4' );
+	wp_enqueue_style( 'sedgemore', get_template_directory_uri() . '/assets/css/sedgemore.css', array(), '1.0.5' );
 
 
 	// Scripts
