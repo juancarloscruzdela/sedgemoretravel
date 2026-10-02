@@ -117,14 +117,18 @@ Sedgemore Travel, as outlined in our Privacy Policy and Terms of Use.</p>
                                 <ul class="sedgemore-list">
                                 <?php
                                 foreach ($footer_links['column_1'] as $link_group) {
-                                    if ( is_array( $link_group['link'] ) && !empty( $link_group['link'] ) ){
-                                        $url = isset($link_group['link']['url']) ? esc_url($link_group['link']['url']) : '#';
-                                        $target = isset($link_group['link']['target']) ? esc_attr($link_group['link']['target']) : '_self';
-                                        $title = isset($link_group['link']['title']) ? esc_html($link_group['link']['title']) : 'Link';
+	                                    if ( is_array( $link_group['link'] ) && !empty( $link_group['link'] ) ){
+	                                        $url = isset($link_group['link']['url']) ? esc_url($link_group['link']['url']) : '#';
+	                                        $target = isset($link_group['link']['target']) ? esc_attr($link_group['link']['target']) : '_self';
+	                                        $raw_title = isset($link_group['link']['title']) ? $link_group['link']['title'] : 'Link';
+	                                        $title = esc_html($raw_title);
 
-                                        // All output is now safely escaped
-                                        echo '<li><a href="' . $url . '" target="' . $target . '"> ' . $title . '</a></li>';
-                                    }
+	                                        // All output is now safely escaped
+	                                        if ( 0 === strcasecmp( trim( $raw_title ), 'Contact' ) ) {
+	                                            echo '<li><a href="' . esc_url( home_url( '/sedgemore-collective/' ) ) . '">Sedgemore Collective</a></li>';
+	                                        }
+	                                        echo '<li><a href="' . $url . '" target="' . $target . '"> ' . $title . '</a></li>';
+	                                    }
                                 }
                                 ?>
                                 </ul>

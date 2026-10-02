@@ -24,18 +24,32 @@ get_header();
     <div class="clear"></div>
     <div class="wrap_team_hedr">
         <?php
-        $contact_details = get_field('contact_details');
-        $enquiry_options = get_field('enquiry_options');
-        ?>
+	        $contact_details = get_field('contact_details');
+	        $enquiry_options = get_field('enquiry_options');
+	        $contact_info = isset( $contact_details['contact_info'] ) ? $contact_details['contact_info'] : '';
+
+	        if ( false === strpos( $contact_info, 'tel:' ) ) {
+	            $contact_info = preg_replace_callback(
+	                '/(T\.\s*)(\+?[0-9][0-9\s().-]{6,}[0-9])/i',
+	                static function ( $matches ) {
+	                    $phone_href = preg_replace( '/(?!^)\D/', '', $matches[2] );
+
+	                    return esc_html( $matches[1] ) . '<a href="tel:' . esc_attr( $phone_href ) . '">' . esc_html( $matches[2] ) . '</a>';
+	                },
+	                $contact_info,
+	                1
+	            );
+	        }
+	        ?>
         <div class="auto-container">
             <div class="contct_us_left wow fadeInLeft" style="visibility: visible; animation-delay: 0.3s;">
                 <div class="cont_left_inr1">
                     <?php echo isset($contact_details['title']) ? $contact_details['title'] : ''; ?>
                 </div>
-                <div class="cont_left_inr2">
-                    <div class="cont_left_inr2_1">
-                        <?php echo isset($contact_details['contact_info']) ? $contact_details['contact_info'] : ''; ?>
-                    </div>
+	                <div class="cont_left_inr2">
+	                    <div class="cont_left_inr2_1">
+	                        <?php echo wp_kses_post( $contact_info ); ?>
+	                    </div>
                     <div class="cont_left_inr2_1 cont_left_inr2_2">
                         <?php echo isset($contact_details['address']) ? $contact_details['address'] : ''; ?>
                     </div>
