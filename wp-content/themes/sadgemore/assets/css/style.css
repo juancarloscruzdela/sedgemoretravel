@@ -1,15 +1,7 @@
-@import url("font-awesome.css");
-@import url("flaticon.css");
 /* @import url('animate.css'); */
 @import url("../owl/animate.css");
 /* @import url('owl.css'); */
 @import url("../owl/assets/owl.carousel.min.css");
-@import url("animation.css");
-@import url("jquery-ui.css");
-@import url("custom-animate.css");
-@import url("jquery.fancybox.min.css");
-@import url("jquery.bootstrap-touchspin.css");
-@import url("jquery.mCustomScrollbar.min.css");
 /*** 
 ====================================================================
 	Reset
@@ -486,6 +478,21 @@ img {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: 280px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 150ms ease, visibility 0s linear 150ms;
+}
+
+.preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    transition: none;
+  }
 }
 
 img {
@@ -13460,6 +13467,7 @@ a.circl_smal.hit_btn1::before{
   padding-right: 60px;
   font-family: "Jost_300";
   font-size: 35px;
+  line-height: normal;
   color: #313131;
 }
 

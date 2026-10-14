@@ -53,6 +53,155 @@ function sedgemore_home_asset_url( $value, $size = 'full' ) {
 }
 
 /**
+ * Return the attachment ID represented by an ACF media field.
+ *
+ * @param mixed $value ACF field value.
+ * @return int
+ */
+function sedgemore_home_attachment_id( $value ) {
+	if ( is_numeric( $value ) ) {
+		return (int) $value;
+	}
+
+	if ( is_array( $value ) && ! empty( $value['ID'] ) ) {
+		return (int) $value['ID'];
+	}
+
+	if ( $value instanceof WP_Post ) {
+		return (int) $value->ID;
+	}
+
+	if ( is_string( $value ) ) {
+		$attachment_id = (int) attachment_url_to_postid( $value );
+
+		if ( $attachment_id ) {
+			return $attachment_id;
+		}
+
+		$uploads = wp_get_upload_dir();
+		$path    = wp_parse_url( $value, PHP_URL_PATH );
+		$marker  = '/wp-content/uploads/';
+
+		if ( $path && false !== strpos( $path, $marker ) ) {
+			$relative_path = ltrim( substr( $path, strpos( $path, $marker ) + strlen( $marker ) ), '/' );
+			$local_url     = trailingslashit( $uploads['baseurl'] ) . $relative_path;
+
+			return (int) attachment_url_to_postid( $local_url );
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * Render an ACF image through WordPress responsive-image APIs when possible.
+ *
+ * @param mixed        $value      ACF image field value.
+ * @param string|array $size       Registered image size or dimensions.
+ * @param array        $attributes Image attributes.
+ * @return string
+ */
+function sedgemore_home_responsive_image( $value, $size = 'full', $attributes = array() ) {
+	$attachment_id = sedgemore_home_attachment_id( $value );
+	$fallback_alt  = '';
+	$has_alt       = array_key_exists( 'alt', $attributes );
+
+	if ( isset( $attributes['alt'] ) ) {
+		$fallback_alt = (string) $attributes['alt'];
+	} elseif ( is_array( $value ) && isset( $value['alt'] ) ) {
+		$fallback_alt = (string) $value['alt'];
+	}
+
+	$attributes = wp_parse_args(
+		$attributes,
+		array(
+			'alt' => $fallback_alt,
+		)
+	);
+
+	if ( $attachment_id ) {
+		if ( ! $has_alt && '' === $attributes['alt'] ) {
+			$media_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+			if ( $media_alt ) {
+				$attributes['alt'] = $media_alt;
+			}
+		}
+
+		$image = wp_get_attachment_image( $attachment_id, $size, false, $attributes );
+		if ( $image ) {
+			return $image;
+		}
+	}
+
+	$url = sedgemore_home_asset_url( $value, $size );
+	if ( ! $url ) {
+		return '';
+	}
+
+	$attributes = wp_parse_args(
+		$attributes,
+		array(
+			'loading'  => 'lazy',
+			'decoding' => 'async',
+		)
+	);
+
+	if ( is_array( $value ) ) {
+		if ( ! empty( $value['width'] ) ) {
+			$attributes['width'] = (int) $value['width'];
+		}
+		if ( ! empty( $value['height'] ) ) {
+			$attributes['height'] = (int) $value['height'];
+		}
+	}
+
+	$attribute_markup = '';
+	foreach ( $attributes as $name => $attribute_value ) {
+		if ( false === $attribute_value || null === $attribute_value ) {
+			continue;
+		}
+		$attribute_markup .= sprintf( ' %s="%s"', esc_attr( $name ), esc_attr( $attribute_value ) );
+	}
+
+	return sprintf( '<img src="%s"%s>', esc_url( $url ), $attribute_markup );
+}
+
+/**
+ * Build responsive hero-poster data from the current ACF attachment.
+ *
+ * @param mixed $value ACF image field value.
+ * @return array
+ */
+function sedgemore_home_hero_poster( $value ) {
+	$url           = sedgemore_home_asset_url( $value );
+	$attachment_id = sedgemore_home_attachment_id( $value );
+	$width         = 1920;
+	$height        = 1000;
+	$srcset        = '';
+
+	if ( $attachment_id ) {
+		$metadata = wp_get_attachment_metadata( $attachment_id );
+
+		if ( is_array( $metadata ) ) {
+			$width  = ! empty( $metadata['width'] ) ? (int) $metadata['width'] : $width;
+			$height = ! empty( $metadata['height'] ) ? (int) $metadata['height'] : $height;
+		}
+
+		$attachment_srcset = wp_get_attachment_image_srcset( $attachment_id, 'full' );
+		$srcset            = $attachment_srcset ? $attachment_srcset : '';
+	}
+
+	$poster = array(
+		'url'    => $url,
+		'width'  => $width,
+		'height' => $height,
+		'srcset' => $srcset,
+	);
+
+	return $poster;
+}
+
+/**
  * Return a URL from an ACF Link, Post Object, Page Link, or URL field.
  *
  * @param mixed  $value   ACF field value.
@@ -92,9 +241,16 @@ $prive_text    = function_exists( 'get_field' ) ? get_field( 'prive_text' ) : ''
 $stories       = function_exists( 'get_field' ) ? get_field( 'stories_content' ) : array();
 
 $hero_banner        = ( is_array( $banners ) && isset( $banners[0] ) && is_array( $banners[0] ) ) ? $banners[0] : array();
-$hero_video_desktop = sedgemore_home_asset_url( $hero_banner['bg_video'] ?? '' );
-$hero_video_mobile  = sedgemore_home_asset_url( $hero_banner['bg_video_mobile'] ?? '' );
+$hero_video_directory = trailingslashit( get_template_directory() ) . 'assets/videos/';
+$hero_video_url       = trailingslashit( get_template_directory_uri() ) . 'assets/videos/';
+$hero_video_desktop   = file_exists( $hero_video_directory . 'hero-desktop.mp4' )
+	? $hero_video_url . 'hero-desktop.mp4'
+	: sedgemore_home_asset_url( $hero_banner['bg_video'] ?? '' );
+$hero_video_mobile    = file_exists( $hero_video_directory . 'hero-mobile-portrait.mp4' )
+	? $hero_video_url . 'hero-mobile-portrait.mp4'
+	: sedgemore_home_asset_url( $hero_banner['bg_video_mobile'] ?? '' );
 $hero_image         = sedgemore_home_asset_url( $hero_banner['bg_image'] ?? '' );
+$hero_poster        = sedgemore_home_hero_poster( $hero_banner['bg_image'] ?? '' );
 
 $destination_link = home_url( '/travel/' );
 $contact_link     = home_url( '/contact/' );
@@ -105,7 +261,7 @@ $membership_link  = home_url( '/membership/' );
  * If you want to change this from WP admin later, replace the fallback by adding
  * an ACF image field and assign it here.
  */
-$prive_bg_image = 'https://b7b3de2e23a730adab54ac5f86fdd07c-18756.sites.k-hosting.co.uk/wp-content/uploads/2026/05/download.jpeg';
+$prive_bg_image = 'https://www.sedgemoretravel.com/wp-content/uploads/2026/10/sedgemore-prive.webp';
 
 $how_steps = array(
 	array(
@@ -357,11 +513,23 @@ font-family: var(--ff-body);
 	to { transform: scale(1); }
 }
 
+.home-review .hero-poster,
+.home-review .hero-poster img,
 .home-review .hero-bg-video {
+	position: absolute;
+	inset: 0;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	display: block;
+}
+
+.home-review .hero-bg-video {
+	opacity: 0;
+}
+
+.home-review .hero-bg-video.is-playing {
+	opacity: 1;
 }
 
 .home-review .hero-overlay {
@@ -679,6 +847,14 @@ font-family: var(--ff-body);
 .home-review .prive-bg {
 	background-size: cover;
 	background-position: center;
+}
+
+.home-review .prive-bg img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
 }
 
 .home-review .prive-overlay {
@@ -1316,10 +1492,23 @@ font-family: var(--ff-body);
 <div class="home-review">
 	<section class="hero">
 		<div class="hero-bg-wrap"<?php if ( ! $hero_video_desktop && $hero_image ) : ?> style="background-image: url('<?php echo esc_url( $hero_image ); ?>');"<?php endif; ?>>
+			<?php if ( $hero_poster['url'] ) : ?>
+				<picture class="hero-poster" aria-hidden="true">
+					<img
+						src="<?php echo esc_url( $hero_poster['url'] ); ?>"
+						<?php if ( $hero_poster['srcset'] ) : ?>srcset="<?php echo esc_attr( $hero_poster['srcset'] ); ?>"<?php endif; ?>
+						sizes="100vw"
+						width="<?php echo esc_attr( $hero_poster['width'] ); ?>"
+						height="<?php echo esc_attr( $hero_poster['height'] ); ?>"
+						alt=""
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					>
+				</picture>
+			<?php endif; ?>
 			<?php if ( $hero_video_desktop ) : ?>
-				<video id="homeReviewHeroVideo" class="hero-bg-video" autoplay muted loop playsinline<?php echo $hero_image ? ' poster="' . esc_url( $hero_image ) . '"' : ''; ?>>
-					<source src="<?php echo esc_url( $hero_video_desktop ); ?>" type="video/mp4">
-				</video>
+				<video id="homeReviewHeroVideo" class="hero-bg-video" muted loop playsinline preload="none" aria-hidden="true"></video>
 			<?php endif; ?>
 		</div>
 		<div class="hero-overlay"></div>
@@ -1355,7 +1544,8 @@ font-family: var(--ff-body);
 
 						$link_url    = ! empty( $offer['link'] ) ? $offer['link'] : '#';
 						$video       = sedgemore_home_asset_url( $offer['video'] ?? '' );
-						$poster      = sedgemore_home_asset_url( $offer['poster'] ?? '' );
+						$poster_value = $offer['poster'] ?? '';
+						$poster       = sedgemore_home_asset_url( $poster_value );
 						$title       = ! empty( $offer['text'] ) ? wp_strip_all_tags( $offer['text'] ) : 'Bespoke Service';
 						$description = $offer_descriptions[ $index ] ?? 'Considered travel support shaped around your plans, preferences, and pace.';
 						$label       = $offer_labels[ $index ] ?? 'Learn more';
@@ -1366,7 +1556,16 @@ font-family: var(--ff-body);
 									<source src="<?php echo esc_url( $video ); ?>" type="video/mp4">
 								</video>
 							<?php elseif ( $poster ) : ?>
-								<img src="<?php echo esc_url( $poster ); ?>" alt="<?php echo esc_attr( $title ); ?>">
+								<?php
+								echo sedgemore_home_responsive_image(
+									$poster_value,
+									'full',
+									array(
+										'alt'   => $title,
+										'sizes' => '(max-width: 767px) calc(100vw - 40px), (max-width: 1199px) calc((100vw - 80px - 4px) / 3), 425px',
+									)
+								); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								?>
 							<?php endif; ?>
 							<div class="offer-card-overlay">
 								<h3><?php echo esc_html( $title ); ?></h3>
@@ -1417,7 +1616,18 @@ font-family: var(--ff-body);
 	</section>
 
 	<section class="prive reveal">
-		<div class="prive-bg"<?php if ( $prive_bg_image ) : ?> style="background-image: url('<?php echo esc_url( $prive_bg_image ); ?>');"<?php endif; ?>></div>
+		<div class="prive-bg" aria-hidden="true">
+			<?php
+			echo sedgemore_home_responsive_image(
+				$prive_bg_image,
+				'full',
+				array(
+					'alt'   => '',
+					'sizes' => '(max-width: 767px) 1800px, 100vw',
+				)
+			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			?>
+		</div>
 		<div class="prive-overlay"></div>
 		<div class="prive-content">
 			<p class="section-label">Sedgemore Priv&eacute;</p>
@@ -1465,7 +1675,8 @@ font-family: var(--ff-body);
 							break;
 						}
 
-						$image    = sedgemore_home_asset_url( $story['image'] ?? '' );
+						$image_value = $story['image'] ?? '';
+						$image       = sedgemore_home_asset_url( $image_value );
 						$raw_text = ! empty( $story['text'] ) ? wp_strip_all_tags( $story['text'] ) : '';
 						$parts    = array_map( 'trim', explode( '-', $raw_text, 2 ) );
 						$title    = ! empty( $parts[0] ) ? $parts[0] : ( $destination_fallbacks[ $index ]['title'] ?? 'Destination' );
@@ -1474,7 +1685,18 @@ font-family: var(--ff-body);
 						?>
 						<a href="<?php echo esc_url( $story_url ); ?>" class="dest-card <?php echo 0 === $index ? 'tall' : ''; ?>">
 							<?php if ( $image ) : ?>
-								<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $title ); ?>">
+								<?php
+								echo sedgemore_home_responsive_image(
+									$image_value,
+									'full',
+									array(
+										'alt'   => $title,
+										'sizes' => 0 === $index
+											? '(max-width: 767px) calc(100vw - 40px), (max-width: 1199px) calc((100vw - 80px) / 2), 640px'
+											: '(max-width: 767px) calc(100vw - 40px), (max-width: 1199px) calc((100vw - 82px) / 4), 320px',
+									)
+								); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								?>
 							<?php endif; ?>
 							<div class="dest-card-info">
 								<h3><?php echo esc_html( $title ); ?></h3>
@@ -1706,26 +1928,67 @@ document.addEventListener('DOMContentLoaded', function () {
 	var heroVideo = document.getElementById('homeReviewHeroVideo');
 
 	if (heroVideo) {
-		var source = heroVideo.querySelector('source');
 		var desktopVideo = <?php echo wp_json_encode( $hero_video_desktop ); ?>;
 		var mobileVideo = <?php echo wp_json_encode( $hero_video_mobile ); ?>;
+		var desktopMedia = window.matchMedia('(min-width: 768px)');
+		var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		var selectedVideo = desktopMedia.matches ? desktopVideo : mobileVideo;
+		var sourceAttached = false;
 
-		function updateHeroSource() {
-			if (!source || !mobileVideo || !desktopVideo) {
+		function attachHeroVideo() {
+			if (!selectedVideo || reducedMotion.matches) {
 				return;
 			}
 
-			var target = window.innerWidth < 768 ? mobileVideo : desktopVideo;
-
-			if (source.getAttribute('src') !== target) {
-				source.setAttribute('src', target);
-				heroVideo.load();
+			if (sourceAttached) {
 				heroVideo.play().catch(function () {});
+				return;
+			}
+
+			sourceAttached = true;
+			heroVideo.muted = true;
+			heroVideo.playsInline = true;
+			heroVideo.src = selectedVideo;
+			heroVideo.load();
+			heroVideo.play().catch(function () {});
+		}
+
+		heroVideo.addEventListener('playing', function () {
+			heroVideo.classList.add('is-playing');
+		});
+
+		function scheduleHeroVideo() {
+			if (!selectedVideo || reducedMotion.matches) {
+				return;
+			}
+
+			window.requestAnimationFrame(function () {
+				window.requestAnimationFrame(function () {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(attachHeroVideo, { timeout: 1500 });
+					} else {
+						window.setTimeout(attachHeroVideo, 250);
+					}
+				});
+			});
+		}
+
+		function handleMotionChange(event) {
+			if (event.matches) {
+				heroVideo.pause();
+				heroVideo.classList.remove('is-playing');
+			} else {
+				scheduleHeroVideo();
 			}
 		}
 
-		updateHeroSource();
-		window.addEventListener('resize', updateHeroSource);
+		if (reducedMotion.addEventListener) {
+			reducedMotion.addEventListener('change', handleMotionChange);
+		} else {
+			reducedMotion.addListener(handleMotionChange);
+		}
+
+		scheduleHeroVideo();
 	}
 });
 </script>

@@ -56,6 +56,6 @@ function sadgemore_customize_partial_blogdescription() {
  * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
  */
 function sadgemore_customize_preview_js() {
-	wp_enqueue_script( 'sadgemore-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), _S_VERSION, true );
+	wp_enqueue_script( 'sadgemore-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), sadgemore_asset_version( 'js/customizer.js' ), true );
 }
 add_action( 'customize_preview_init', 'sadgemore_customize_preview_js' );

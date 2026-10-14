@@ -21,12 +21,15 @@
 </head>
 
 <body <?php body_class('hidden-bar-wrapper'); ?>>
-<!-- Preloader -->
-<div class="preloader">
-    <div class="loading_circl_outer">
-        <img src="<?php echo get_template_directory_uri() . '/assets/images/flower.png' ?>" class="loading_circl" >
-    </div>
-</div>
+<?php if ( ! is_front_page() ) : ?>
+	<!-- Preloader -->
+	<div class="preloader" aria-hidden="true">
+	    <div class="loading_circl_outer">
+	        <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/flower.png' ); ?>" class="loading_circl" alt="">
+	    </div>
+	</div>
+	<noscript><style>.preloader{display:none!important}</style></noscript>
+<?php endif; ?>
 <?php wp_body_open(); ?>
 <div class="page-wrapper">
 <!-- SEDGEMORE_HEADER_VERSION: A -->
@@ -36,6 +39,11 @@
    <?php
       $header_logo = get_field( 'header_logo', 'option' );
       $dark_logo = get_field( 'dark_logo', 'option' );
+      $header_logo_alt = $header_logo ? trim( (string) get_post_meta( $header_logo, '_wp_attachment_image_alt', true ) ) : '';
+      $dark_logo_alt = $dark_logo ? trim( (string) get_post_meta( $dark_logo, '_wp_attachment_image_alt', true ) ) : '';
+
+      $header_logo_alt = $header_logo_alt ?: get_bloginfo( 'name' );
+      $dark_logo_alt = $dark_logo_alt ?: get_bloginfo( 'name' );
    ?>
    <?php
       // Force the dark header (black logo + search) on specific page templates
@@ -96,19 +104,19 @@
                   </div>    
                   <a href="<?php echo home_url(); ?>" class="logo_a wow fadeIn" style="visibility: visible; animation-delay: 0.0s;" >
                      <?php if( $header_logo ):
-                           echo wp_get_attachment_image( $header_logo, 'full', "", "" ); 
+                           echo wp_get_attachment_image( $header_logo, 'full', false, array( 'alt' => $header_logo_alt ) );
                         else: ?>
-                           <img src="<?php echo get_template_directory_uri() . '/assets/images/logo.png' ?>" alt ="sedgemore">
+                           <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
                         <?php
                      endif; ?>  
                   </a>
                </div>
             </div>
             <div class="clickable--search-open float-right mt-[26px] md:mt-[21px] cursor-pointer "  >
-               <img src="<?php echo get_template_directory_uri() . '/assets/images/search_icon.png' ?>" class="w-4 h-4 md:w-6 md:h-6 block" >
+               <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/search_icon.png' ); ?>" class="w-4 h-4 md:w-6 md:h-6 block" alt="">
             </div>
             <div class="clickable--search-close hidden float-right mt-[26px] md:mt-[21px] cursor-pointer "  >
-               <img src="<?php echo get_template_directory_uri() . '/assets/images/cross.png' ?>" class="w-4 h-4 md:w-6 md:h-6" >
+               <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/cross.png' ); ?>" class="w-4 h-4 md:w-6 md:h-6" alt="">
             </div>
             <div class="clear"></div>
          </div>
@@ -124,27 +132,27 @@
                   <a href="<?php echo home_url(); ?>" class="logo_a wow fadeIn" style="visibility: visible; animation-delay: 0.0s;" > 
                      
                      <?php if( $dark_logo ):
-                           echo wp_get_attachment_image( $dark_logo, 'full', "", ['class'=>'dark_ver_2'] ); 
+                           echo wp_get_attachment_image( $dark_logo, 'full', false, array( 'class' => 'dark_ver_2', 'alt' => $dark_logo_alt ) );
                         else: ?>
-                           <img src="<?php echo get_template_directory_uri() . '/assets/images/logo_dark.png' ?>" class="dark_ver_2" >
+                           <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo_dark.png' ); ?>" class="dark_ver_2" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
                         <?php
                      endif; ?> 
                      
                      
                      <?php if( $header_logo ):
-                           echo wp_get_attachment_image( $header_logo, 'full', "", ['class'=>'dark_ver_1_2'] ); 
+                           echo wp_get_attachment_image( $header_logo, 'full', false, array( 'class' => 'dark_ver_1_2', 'alt' => $header_logo_alt ) );
                         else: ?>
-                           <img src="<?php echo get_template_directory_uri() . '/assets/images/logo.png' ?>" class="dark_ver_1_2" >
+                           <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" class="dark_ver_1_2" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
                         <?php
                      endif; ?> 
                   </a>
                </div>
             </div>
             <div class="clickable--search-open float-right mt-[26px] md:mt-[21px] cursor-pointer " >
-               <img src="<?php echo get_template_directory_uri() . '/assets/images/search_black.png' ?>" class="w-4 h-4 md:w-6 md:h-6 block" >
+               <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/search_black.png' ); ?>" class="w-4 h-4 md:w-6 md:h-6 block" alt="">
             </div>
             <div class="clickable--search-close hidden float-right mt-[26px] md:mt-[21px] cursor-pointer  " >
-               <img src="<?php echo get_template_directory_uri() . '/assets/images/cross.png' ?>" class="w-4 h-4 md:w-6 md:h-6 " >
+               <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/cross.png' ); ?>" class="w-4 h-4 md:w-6 md:h-6 " alt="">
             </div>
             <div class="clear"></div>
          </div>

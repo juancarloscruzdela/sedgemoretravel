@@ -11,10 +11,10 @@ $right_menu = get_field( 'right_menu', 'option' );
 <div class="header_nav_inner flex md:justify-center md:items-start" > 
     
     <div class="nav-top">
-    <img src="<?php echo get_template_directory_uri() . '/assets/images/Union_1.png' ?>" class="divider_sharp divider_sharp_dark">
-    <img src="<?php echo get_template_directory_uri() . '/assets/images/Union_1_bright.png' ?>" class="divider_sharp divider_sharp_bright" >
+    <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/Union_1.png' ); ?>" class="divider_sharp divider_sharp_dark" alt="">
+    <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/Union_1_bright.png' ); ?>" class="divider_sharp divider_sharp_bright" alt="">
 
-    <img src="<?php echo get_template_directory_uri() . '/assets/images/flower.png' ?>" class="flower-image " >
+    <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/flower.png' ); ?>" class="flower-image " alt="">
 
     <div class="clear"></div>
     </div>

@@ -63,9 +63,17 @@ window.addEventListener("resize", adjustBannerHeight);
 	//Hide Loading Box (Preloader)
 
 	function handlePreloader() {
-		if ($(".preloader").length) {
-			$(".preloader").delay(200).fadeOut(500);
+		var preloader = document.querySelector(".preloader");
+
+		if (preloader) {
+			preloader.classList.add("is-hidden");
 		}
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", handlePreloader, { once: true });
+	} else {
+		handlePreloader();
 	}
 
 	//Update Header Style and Scroll to Top
@@ -942,15 +950,6 @@ window.addEventListener("resize", adjustBannerHeight);
 		headerStyle();
 	});
 
-	/* ==========================================================================
-
-   When document is loading, do
-
-   ========================================================================== */
-
-	$(window).on("load", function () {
-		handlePreloader();
-	});
 })(window.jQuery);
 /*
 $(window).scroll(function () {

@@ -43,9 +43,9 @@ get_header();
 	        ?>
         <div class="auto-container">
             <div class="contct_us_left wow fadeInLeft" style="visibility: visible; animation-delay: 0.3s;">
-                <div class="cont_left_inr1">
-                    <?php echo isset($contact_details['title']) ? $contact_details['title'] : ''; ?>
-                </div>
+                <h1 class="cont_left_inr1">
+                    <?php echo isset( $contact_details['title'] ) ? wp_kses_post( $contact_details['title'] ) : ''; ?>
+                </h1>
 	                <div class="cont_left_inr2">
 	                    <div class="cont_left_inr2_1">
 	                        <?php echo wp_kses_post( $contact_info ); ?>
