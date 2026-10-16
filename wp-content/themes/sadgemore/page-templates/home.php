@@ -250,7 +250,6 @@ $hero_video_mobile    = file_exists( $hero_video_directory . 'hero-mobile-portra
 	? $hero_video_url . 'hero-mobile-portrait.mp4'
 	: sedgemore_home_asset_url( $hero_banner['bg_video_mobile'] ?? '' );
 $hero_image         = sedgemore_home_asset_url( $hero_banner['bg_image'] ?? '' );
-$hero_poster        = sedgemore_home_hero_poster( $hero_banner['bg_image'] ?? '' );
 
 $destination_link = home_url( '/travel/' );
 $contact_link     = home_url( '/contact/' );
@@ -514,7 +513,6 @@ font-family: var(--ff-body);
 }
 
 .home-review .hero-poster,
-.home-review .hero-poster img,
 .home-review .hero-bg-video {
 	position: absolute;
 	inset: 0;
@@ -522,6 +520,10 @@ font-family: var(--ff-body);
 	height: 100%;
 	object-fit: cover;
 	display: block;
+}
+
+.home-review .hero-poster {
+	background: #000;
 }
 
 .home-review .hero-bg-video {
@@ -1492,21 +1494,7 @@ font-family: var(--ff-body);
 <div class="home-review">
 	<section class="hero">
 		<div class="hero-bg-wrap"<?php if ( ! $hero_video_desktop && $hero_image ) : ?> style="background-image: url('<?php echo esc_url( $hero_image ); ?>');"<?php endif; ?>>
-			<?php if ( $hero_poster['url'] ) : ?>
-				<picture class="hero-poster" aria-hidden="true">
-					<img
-						src="<?php echo esc_url( $hero_poster['url'] ); ?>"
-						<?php if ( $hero_poster['srcset'] ) : ?>srcset="<?php echo esc_attr( $hero_poster['srcset'] ); ?>"<?php endif; ?>
-						sizes="100vw"
-						width="<?php echo esc_attr( $hero_poster['width'] ); ?>"
-						height="<?php echo esc_attr( $hero_poster['height'] ); ?>"
-						alt=""
-						loading="eager"
-						fetchpriority="high"
-						decoding="async"
-					>
-				</picture>
-			<?php endif; ?>
+			<div class="hero-poster" aria-hidden="true"></div>
 			<?php if ( $hero_video_desktop ) : ?>
 				<video id="homeReviewHeroVideo" class="hero-bg-video" muted loop playsinline preload="none" aria-hidden="true"></video>
 			<?php endif; ?>
